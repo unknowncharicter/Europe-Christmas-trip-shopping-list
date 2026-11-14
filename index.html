@@ -176,6 +176,8 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 .ms-text{display:grid; gap:2px; align-content:center; padding-block:4px; color:var(--muted); font-size:14px}
 .ms-text strong{color:var(--elliot); font-size:16px; font-weight:800}
 .milestone.is-done .flag{border-style:solid; background:var(--elliot); color:var(--surface); font-size:20px}
+.marker .flag{border:2px solid var(--route); background:var(--route-soft); color:var(--route); font-family:var(--mono); font-size:18px}
+.marker .ms-text strong{color:var(--ink)}
 
 /* Tips */
 .tips{margin-top:34px; display:grid; gap:12px}
@@ -199,7 +201,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   <header class="intro">
     <p class="eyebrow">Macquarie Centre · North Ryde</p>
     <h1>Europe Christmas trip shopping</h1>
-    <p class="lede">For Elliot and Clara. Start on Level 4 and work down. Every stop is on the same floor or lower, so you never walk back.</p>
+    <p class="lede">For Elliot and Clara. Park on the roof, start on Level 4 and work down. Every stop is on the same floor or lower, so you never walk back.</p>
   </header>
 
   <div class="bar">
@@ -238,6 +240,8 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 
   // Shops in walking order. Locations from the Macquarie Centre store directory.
   var STOPS = [
+    { marker: true, title: "Park: Pink Rooftop Car Park",
+      text: "Follow the signs for Timezone. Go in through the Timezone doors onto Level 4. Kathmandu and Macpac are close by." },
     { id: "l4", level: "4", name: "Kathmandu & Macpac", where: "Level 4 · near JB Hi-Fi",
       tip: "The two shops are next to each other. Check both and compare price and fit.",
       items: [
@@ -271,7 +275,9 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       ] },
     { id: "backup", level: "1", who: "c", optional: true, name: "Backup for shoes", where: "Level 1 · Shoes & Sox or Williams",
       tip: "Only if Myer had nothing. Shoes & Sox is near Hobbyco and has a big kids range. Williams is near Big W.",
-      items: [] }
+      items: [] },
+    { marker: true, title: "Back to the car",
+      text: "Go back up to Level 4 and out the Timezone doors to the Pink Rooftop Car Park." }
   ];
 
   var WHO = { e: "Elliot", c: "Clara", b: "Both" };
@@ -318,7 +324,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   function matches(it, f) { return f === "all" || it.who === f || it.who === "b"; }
   function allItems() {
     var out = [];
-    STOPS.forEach(function (s) { if (!s.milestone) out = out.concat(itemsOf(s)); });
+    STOPS.forEach(function (s) { if (!s.milestone && !s.marker) out = out.concat(itemsOf(s)); });
     return out;
   }
   function counts(f) {
@@ -443,11 +449,19 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         h("span", { text: eDone ? "The rest of the stops are for Clara." : (c.total - c.done) + " of Elliot's things still to get." })));
   }
 
+  function renderMarker(s) {
+    return h("li", { class: "milestone marker" },
+      h("div", { class: "rail" }, h("span", { class: "flag", "aria-hidden": "true", text: "P" })),
+      h("div", { class: "ms-text" }, h("strong", { text: s.title }), h("span", { text: s.text })));
+  }
+
   function render(focusId) {
     var f = state.filter;
     var route = document.getElementById("route");
     route.textContent = "";
-    STOPS.forEach(function (s) { route.append(s.milestone ? renderMilestone() : renderStop(s, f)); });
+    STOPS.forEach(function (s) {
+      route.append(s.marker ? renderMarker(s) : s.milestone ? renderMilestone() : renderStop(s, f));
+    });
 
     var all = counts("all"), e = counts("e"), c = counts("c"), cur = counts(f);
     var left = cur.total - cur.done;
