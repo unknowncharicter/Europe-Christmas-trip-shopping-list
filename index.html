@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Europe Trip Shopping List</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Shopping list for Elliot and Clara's Europe Christmas trip, in walking order through Macquarie Centre.">
+<meta name="theme-color" content="#EEF3F6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Trip Shopping">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231D6A56'/%3E%3Cpath d='M18 33l9 9 19-20' fill='none' stroke='white' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one column read top-down like a lift directory. A level "button" sits on a rail, the shop card beside it. */
+:root{
+  --bg:#EEF3F6; --surface:#FFFFFF; --ink:#13202D; --muted:#566878; --line:#D3DCE4;
+  --route:#1D6A56; --route-soft:#DAEDE6; --on-route:#FFFFFF;
+  --elliot:#22609F; --elliot-soft:#E0EBF7;
+  --clara:#A53A63; --clara-soft:#F6E2EA;
+  --note:#7E4C00; --note-soft:#FBEFD8;
+  --font:"Overpass", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:"Overpass Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E161E; --surface:#16212C; --ink:#E6EDF3; --muted:#97A7B6; --line:#2A3947;
+    --route:#5BBB9B; --route-soft:#173A31; --on-route:#08140F;
+    --elliot:#86B6EA; --elliot-soft:#1A2E45;
+    --clara:#E991B4; --clara-soft:#3B1F2C;
+    --note:#E8BC72; --note-soft:#382A13;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E161E; --surface:#16212C; --ink:#E6EDF3; --muted:#97A7B6; --line:#2A3947;
+  --route:#5BBB9B; --route-soft:#173A31; --on-route:#08140F;
+  --elliot:#86B6EA; --elliot-soft:#1A2E45;
+  --clara:#E991B4; --clara-soft:#3B1F2C;
+  --note:#E8BC72; --note-soft:#382A13;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--font); font-size:16px; line-height:1.45;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:0 calc(40px + env(safe-area-inset-bottom, 0px));
+}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top, 0px); z-index:10; background:var(--bg)}
+button, input, select{font:inherit; color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--route); outline-offset:2px}
+
+.wrap{max-width:620px; margin:0 auto}
+
+/* Intro */
+.intro{padding-block:28px 6px; display:grid; gap:8px}
+.eyebrow{margin:0; font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--route)}
+h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-.015em; text-wrap:balance}
+.lede{margin:0; color:var(--muted); max-width:62ch}
+
+/* Sticky progress + filter */
+.bar{
+  position:sticky; top:env(safe-area-inset-top, 0px); z-index:5;
+  background:var(--bg); padding-block:12px; display:grid; gap:10px;
+  border-bottom:1px solid var(--line);
+}
+.progress-text{display:flex; justify-content:space-between; align-items:baseline; gap:12px; font-size:15px}
+.progress-text strong{font-weight:800}
+.progress-text span{font-family:var(--mono); font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums}
+.track{height:8px; border-radius:99px; background:var(--line); overflow:hidden; margin-top:6px}
+.fill{height:100%; width:0; background:var(--route); border-radius:99px; transition:width .35s ease}
+.seg{display:grid; grid-template-columns:repeat(3, 1fr); gap:6px}
+.seg button{
+  min-height:44px; border:1px solid var(--line); background:var(--surface); border-radius:12px;
+  font-weight:700; font-size:15px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.15; padding:4px 6px;
+}
+.seg button small{font-family:var(--mono); font-weight:500; font-size:11px; color:var(--muted); font-variant-numeric:tabular-nums}
+.seg button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--bg)}
+.seg button[aria-pressed="true"] small{color:inherit; opacity:.8}
+.seg button[data-f="e"][aria-pressed="true"]{background:var(--elliot); border-color:var(--elliot); color:var(--surface)}
+.seg button[data-f="c"][aria-pressed="true"]{background:var(--clara); border-color:var(--clara); color:var(--surface)}
+
+/* Route */
+.route{list-style:none; margin:18px 0 0; padding:0; display:grid; gap:14px}
+.stop, .milestone{display:grid; grid-template-columns:46px minmax(0, 1fr); gap:12px}
+.rail{position:relative; display:flex; justify-content:center; padding-top:10px}
+.rail::before{content:""; position:absolute; top:0; bottom:-14px; left:50%; width:2px; margin-left:-1px; background:var(--line)}
+.route > li:first-child .rail::before{top:10px}
+.route > li:last-child .rail::before{display:none}
+
+.lvl{
+  position:relative; z-index:1; width:46px; height:46px; border-radius:50%;
+  border:2px solid var(--ink); background:var(--surface);
+  display:flex; align-items:center; justify-content:center; gap:1px;
+  font-family:var(--mono); font-weight:700; font-size:18px; line-height:1;
+  transition:background .25s, border-color .25s, color .25s, box-shadow .25s;
+}
+.lvl .l{font-size:11px; opacity:.7; margin-top:2px}
+.lvl.range{font-size:14px}
+.stop.is-done .lvl{background:var(--route); border-color:var(--route); color:var(--on-route); box-shadow:0 0 0 4px var(--route-soft)}
+.stop.is-optional .lvl{border-style:dashed; border-color:var(--muted); color:var(--muted)}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; min-width:0; overflow:hidden}
+.stop.is-optional .card{border-style:dashed; background:transparent}
+.card-head{
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:14px 16px; background:none; border:0; text-align:left; min-height:66px;
+}
+.head-text{display:grid; gap:2px; min-width:0}
+.shop{font-size:18px; font-weight:800; line-height:1.2}
+.where{font-family:var(--mono); font-size:12.5px; color:var(--muted)}
+.count{
+  flex:none; font-family:var(--mono); font-size:13px; font-weight:700; font-variant-numeric:tabular-nums;
+  padding:4px 10px; border-radius:99px; background:var(--bg); color:var(--muted); white-space:nowrap;
+}
+.stop.is-done .count{background:var(--route-soft); color:var(--route)}
+.stop.is-done .shop{color:var(--muted)}
+.chev{flex:none; width:10px; height:10px; border-right:2px solid var(--muted); border-bottom:2px solid var(--muted); transform:rotate(45deg); margin:-4px 2px 0 0; transition:transform .2s}
+.card-head[aria-expanded="false"] .chev{transform:rotate(-45deg); margin:0 4px 0 0}
+.head-right{display:flex; align-items:center; gap:10px}
+
+.card-body{display:grid}
+.tip{margin:0; padding:0 16px 12px; font-size:14px; color:var(--muted)}
+.alt{margin:0 16px 12px; padding:8px 12px; border-radius:10px; font-size:13.5px; background:var(--note-soft); color:var(--note)}
+.empty-msg{margin:0; padding:0 16px 14px; font-size:14px; color:var(--muted); font-style:italic}
+
+.items{list-style:none; margin:0; padding:0}
+.item{position:relative; border-top:1px solid var(--line); display:flex; align-items:stretch}
+.chk{position:absolute; opacity:0; width:1px; height:1px; pointer-events:none}
+.item-label{flex:1; min-width:0; display:grid; grid-template-columns:26px minmax(0, 1fr); gap:12px; padding:13px 16px; cursor:pointer; align-items:start}
+.box{
+  width:26px; height:26px; border-radius:8px; border:2px solid var(--muted); background:var(--surface);
+  display:grid; place-items:center; margin-top:-1px; transition:background .15s, border-color .15s;
+}
+.box::after{content:""; width:7px; height:13px; border-right:3px solid var(--on-route); border-bottom:3px solid var(--on-route); transform:rotate(45deg) scale(0); margin-top:-3px; transition:transform .15s}
+.chk:checked + .item-label .box{background:var(--route); border-color:var(--route)}
+.chk:checked + .item-label .box::after{transform:rotate(45deg) scale(1)}
+.chk:focus-visible + .item-label .box{outline:3px solid var(--route); outline-offset:2px}
+.txt{display:grid; gap:4px; min-width:0}
+.name{font-weight:600; font-size:16.5px; overflow-wrap:anywhere}
+.chk:checked + .item-label .name{text-decoration:line-through; color:var(--muted)}
+.meta{display:flex; flex-wrap:wrap; gap:6px; align-items:center}
+.tag{font-size:11.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:99px; line-height:1.5}
+.tag.e{background:var(--elliot-soft); color:var(--elliot)}
+.tag.c{background:var(--clara-soft); color:var(--clara)}
+.tag.b{background:var(--bg); color:var(--muted)}
+.size{font-family:var(--mono); font-size:12px; color:var(--muted)}
+.inote{font-size:13.5px; color:var(--muted)}
+.del{flex:none; width:48px; border:0; background:none; color:var(--muted); font-size:22px; line-height:1}
+.del:hover{color:var(--clara)}
+
+.add{border-top:1px solid var(--line); padding:8px 16px 12px; display:grid; gap:8px}
+.add-btn{justify-self:start; border:0; background:none; padding:6px 0; color:var(--route); font-weight:700; font-size:14.5px}
+.add-form{display:flex; flex-wrap:wrap; gap:8px}
+.add-form input, .add-form select{height:42px; border:1px solid var(--line); border-radius:10px; background:var(--bg); padding:0 12px}
+.add-form input{flex:1 1 170px; min-width:0}
+.add-form select{flex:0 0 auto}
+.add-form button{height:42px; border:0; border-radius:10px; padding:0 16px; background:var(--route); color:var(--on-route); font-weight:800}
+
+.stop.is-dim .card{opacity:.6}
+
+/* Elliot milestone */
+.milestone .rail{padding-top:2px}
+.flag{
+  position:relative; z-index:1; width:46px; height:46px; border-radius:50%;
+  border:2px dashed var(--elliot); background:var(--bg); color:var(--elliot);
+  display:grid; place-items:center; font-weight:800; font-size:13px; letter-spacing:.02em;
+}
+.ms-text{display:grid; gap:2px; align-content:center; padding-block:4px; color:var(--muted); font-size:14px}
+.ms-text strong{color:var(--elliot); font-size:16px; font-weight:800}
+.milestone.is-done .flag{border-style:solid; background:var(--elliot); color:var(--surface); font-size:20px}
+
+/* Tips */
+.tips{margin-top:34px; display:grid; gap:12px}
+.tips h2{margin:0; font-size:21px; font-weight:800}
+.tips ul{list-style:none; margin:0; padding:0; display:grid; gap:10px}
+.tips li{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-size:15px; max-width:65ch}
+.tips li strong{display:block; font-weight:800; margin-bottom:2px}
+
+.foot{margin-top:28px; display:grid; gap:10px; justify-items:start; font-size:13.5px; color:var(--muted)}
+.foot p{margin:0}
+.reset{border:1px solid var(--line); background:var(--surface); border-radius:10px; padding:9px 14px; font-weight:700; font-size:14px}
+.confirm{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.confirm .yes{border:0; background:var(--clara); color:var(--surface); border-radius:10px; padding:9px 14px; font-weight:800; font-size:14px}
+
+@media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+@media (min-width:560px){ h1{font-size:38px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="intro">
+    <p class="eyebrow">Macquarie Centre · North Ryde</p>
+    <h1>Europe Christmas trip shopping</h1>
+    <p class="lede">For Elliot and Clara. Start on Level 4 and work down. Every stop is on the same floor or lower, so you never walk back.</p>
+  </header>
+
+  <div class="bar">
+    <div class="progress">
+      <div class="progress-text"><strong id="leftText">12 things to get</strong><span id="doneText">0 of 12</span></div>
+      <div class="track"><div class="fill" id="fill"></div></div>
+    </div>
+    <div class="seg" role="group" aria-label="Show items for">
+      <button type="button" data-f="all" aria-pressed="true">Everyone<small id="nAll">0/12</small></button>
+      <button type="button" data-f="e" aria-pressed="false">Elliot<small id="nE">0/5</small></button>
+      <button type="button" data-f="c" aria-pressed="false">Clara<small id="nC">0/7</small></button>
+    </div>
+  </div>
+
+  <ol class="route" id="route" aria-label="Shops in walking order"></ol>
+
+  <section class="tips" aria-labelledby="tipsTitle">
+    <h2 id="tipsTitle">Good to know</h2>
+    <ul>
+      <li><strong>Leather sneakers are not waterproof</strong>Snow will soak them. Look for waterproof kids boots, or buy a waterproofing spray for the sneakers. Kathmandu and Macpac may have kids snow boots, so check on Level 4.</li>
+      <li><strong>NeutraFluor 5000 Plus is often kept behind the counter</strong>Ask the pharmacist. Calling the pharmacy first to check stock saves a wasted trip.</li>
+      <li><strong>Sizes</strong>Elliot is a Small. Some shops call that adult S, others boys 14, so compare. Clara is 6–8.</li>
+      <li><strong>Still need for the snow?</strong>Beanie, gloves, thermal socks and a neck warmer. All are at Kathmandu and Macpac on Level 4. Tap "Add item" to add them.</li>
+    </ul>
+  </section>
+
+  <footer class="foot">
+    <p>Ticks save on this phone only. They don't sync to another phone.</p>
+    <div id="resetArea"><button type="button" class="reset" id="resetBtn">Clear all ticks</button></div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // Shops in walking order. Locations from the Macquarie Centre store directory.
+  var STOPS = [
+    { id: "l4", level: "4", name: "Kathmandu & Macpac", where: "Level 4 · near JB Hi-Fi",
+      tip: "The two shops are next to each other. Check both and compare price and fit.",
+      items: [
+        { id: "e-wpants", who: "e", text: "2 long waterproof pants", size: "S" },
+        { id: "e-tops", who: "e", text: "2 long sleeve tops", size: "S" },
+        { id: "c-pants", who: "c", text: "Pants", size: "6–8", note: "Waterproof like Elliot's? If not, get them at Seed." },
+        { id: "c-tops", who: "c", text: "2 long sleeve tops", size: "6–8", note: "Or get them at Seed." }
+      ] },
+    { id: "pharm", level: "3", name: "Priceline Pharmacy", where: "Level 3 · near Coles",
+      alt: "Not in stock? There is a second Priceline on Level 0, near Service NSW.",
+      items: [
+        { id: "e-paste", who: "e", text: "NeutraFluor 5000 Plus toothpaste", note: "For braces. Ask at the pharmacy counter." }
+      ] },
+    { id: "bonds", level: "3", name: "Bonds", where: "Level 3 · near Myer",
+      items: [
+        { id: "e-undies", who: "e", text: "14 undies", size: "S" },
+        { id: "e-pjs", who: "e", text: "Winter PJs", size: "S" },
+        { id: "c-undies", who: "c", text: "Undies", size: "6–8" },
+        { id: "c-pjs", who: "c", text: "Winter PJs", size: "6–8" }
+      ] },
+    { milestone: "e" },
+    { id: "myer", level: "3–2", name: "Myer kids shoes", where: "Levels 3 & 2 · next to Bonds",
+      tip: "Ask staff which floor has kids shoes. Leave Myer on Level 2 to reach Seed.",
+      items: [
+        { id: "c-shoes", who: "c", text: "Leather sneakers for the snow", note: "Bring Clara to try them on with thick socks." }
+      ] },
+    { id: "seed", level: "2", name: "Seed Heritage", where: "Level 2 · near Mecca Maxima",
+      items: [
+        { id: "c-tunic", who: "c", text: "Tunic", size: "6–8" },
+        { id: "c-shorts", who: "c", text: "1 pair of shorts", size: "6–8" }
+      ] },
+    { id: "backup", level: "1", who: "c", optional: true, name: "Backup for shoes", where: "Level 1 · Shoes & Sox or Williams",
+      tip: "Only if Myer had nothing. Shoes & Sox is near Hobbyco and has a big kids range. Williams is near Big W.",
+      items: [] }
+  ];
+
+  var WHO = { e: "Elliot", c: "Clara", b: "Both" };
+  var KEY = "europe-trip-shopping-v1";
+  var state = { checked: {}, custom: {}, filter: "all" };
+  var expanded = {};   // per-visit open/closed overrides
+  var addOpen = {};
+  var confirmReset = false;
+
+  try {
+    var saved = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (saved && typeof saved === "object") {
+      state.checked = saved.checked || {};
+      state.custom = saved.custom || {};
+      state.filter = saved.filter || "all";
+    }
+  } catch (e) {}
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function h(tag, attrs) {
+    var el = document.createElement(tag);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (k) {
+        var v = attrs[k];
+        if (v == null || v === false) return;
+        if (k === "class") el.className = v;
+        else if (k === "text") el.textContent = v;
+        else if (k.indexOf("on") === 0) el.addEventListener(k.slice(2), v);
+        else el.setAttribute(k, v === true ? "" : v);
+      });
+    }
+    for (var i = 2; i < arguments.length; i++) {
+      var kid = arguments[i];
+      if (kid == null || kid === false) continue;
+      el.append(kid.nodeType ? kid : document.createTextNode(kid));
+    }
+    return el;
+  }
+
+  function itemsOf(stop) { return (stop.items || []).concat(state.custom[stop.id] || []); }
+  function matches(it, f) { return f === "all" || it.who === f || it.who === "b"; }
+  function allItems() {
+    var out = [];
+    STOPS.forEach(function (s) { if (!s.milestone) out = out.concat(itemsOf(s)); });
+    return out;
+  }
+  function counts(f) {
+    var list = allItems().filter(function (it) { return matches(it, f); });
+    var done = list.filter(function (it) { return state.checked[it.id]; }).length;
+    return { done: done, total: list.length };
+  }
+  function stopDone(stop) {
+    if (stop.id === "backup") return !!state.checked["c-shoes"];
+    var items = itemsOf(stop);
+    return items.length > 0 && items.every(function (it) { return state.checked[it.id]; });
+  }
+
+  function renderItem(it, stop) {
+    var id = "chk-" + it.id;
+    var input = h("input", { type: "checkbox", id: id, class: "chk" });
+    input.checked = !!state.checked[it.id];
+    input.addEventListener("change", function () {
+      if (input.checked) state.checked[it.id] = true; else delete state.checked[it.id];
+      if (stopDone(stop)) delete expanded[stop.id];
+      if (stop.id === "myer") delete expanded.backup;
+      save(); render(id);
+    });
+    var label = h("label", { for: id, class: "item-label" },
+      h("span", { class: "box", "aria-hidden": "true" }),
+      h("span", { class: "txt" },
+        h("span", { class: "name", text: it.text }),
+        h("span", { class: "meta" },
+          h("span", { class: "tag " + it.who, text: WHO[it.who] }),
+          it.size ? h("span", { class: "size", text: "Size " + it.size }) : null),
+        it.note ? h("span", { class: "inote", text: it.note }) : null));
+    var li = h("li", { class: "item" }, input, label);
+    if (it.custom) {
+      li.append(h("button", {
+        type: "button", class: "del", "aria-label": "Remove " + it.text, text: "×",
+        onclick: function () {
+          state.custom[stop.id] = (state.custom[stop.id] || []).filter(function (x) { return x.id !== it.id; });
+          delete state.checked[it.id];
+          save(); render();
+        }
+      }));
+    }
+    return li;
+  }
+
+  function renderAdd(stop) {
+    var wrap = h("div", { class: "add" });
+    if (!addOpen[stop.id]) {
+      wrap.append(h("button", { type: "button", class: "add-btn", id: "addbtn-" + stop.id, text: "+ Add item",
+        onclick: function () { addOpen[stop.id] = true; render("add-" + stop.id); } }));
+      return wrap;
+    }
+    var input = h("input", { id: "add-" + stop.id, type: "text", placeholder: "What else?", "aria-label": "New item", autocomplete: "off" });
+    var sel = h("select", { id: "who-" + stop.id, "aria-label": "Who is it for" },
+      h("option", { value: "e", text: "Elliot" }), h("option", { value: "c", text: "Clara" }), h("option", { value: "b", text: "Both" }));
+    if (state.filter === "c" || stop.who === "c" || stop.id === "seed" || stop.id === "myer") sel.value = "c";
+    if (state.filter === "e") sel.value = "e";
+    var form = h("form", { class: "add-form" }, input, sel, h("button", { type: "submit", text: "Add" }));
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var text = input.value.trim();
+      if (!text) { input.focus(); return; }
+      var list = state.custom[stop.id] || (state.custom[stop.id] = []);
+      list.push({ id: "x" + Date.now().toString(36), who: sel.value, text: text, custom: true });
+      delete expanded[stop.id];
+      save(); render("add-" + stop.id);
+    });
+    wrap.append(form);
+    return wrap;
+  }
+
+  function renderStop(stop, f) {
+    var items = itemsOf(stop);
+    var vis = items.filter(function (it) { return matches(it, f); });
+    var done = stopDone(stop);
+    var vdone = vis.filter(function (it) { return state.checked[it.id]; }).length;
+    var forOther = stop.who && f !== "all" && stop.who !== f;
+    var empty = (items.length > 0 && vis.length === 0) || forOther;
+    var open = expanded[stop.id] !== undefined ? expanded[stop.id] : !(done || empty);
+
+    var countText;
+    if (stop.id === "backup") countText = done ? "Not needed" : "If needed";
+    else if (done) countText = "Done ✓";
+    else countText = vdone + "/" + vis.length;
+
+    var range = stop.level.length > 1;
+    var lvl = h("span", { class: "lvl" + (range ? " range" : ""), "aria-label": "Level " + stop.level },
+      range ? null : h("span", { class: "l", text: "L" }), stop.level);
+
+    var bodyId = "body-" + stop.id;
+    var head = h("button", { type: "button", class: "card-head", "aria-expanded": String(open), "aria-controls": bodyId, id: "head-" + stop.id,
+      onclick: function () { expanded[stop.id] = !open; render("head-" + stop.id); } },
+      h("span", { class: "head-text" }, h("span", { class: "shop", text: stop.name }), h("span", { class: "where", text: stop.where })),
+      h("span", { class: "head-right" }, h("span", { class: "count", text: countText }), h("span", { class: "chev", "aria-hidden": "true" })));
+
+    var body = h("div", { class: "card-body", id: bodyId });
+    body.hidden = !open;
+    if (empty) {
+      body.append(h("p", { class: "empty-msg", text: "Nothing for " + WHO[f] + " here." }));
+    } else {
+      if (stop.tip) body.append(h("p", { class: "tip", text: stop.tip }));
+      if (vis.length) {
+        var ul = h("ul", { class: "items" });
+        vis.forEach(function (it) { ul.append(renderItem(it, stop)); });
+        body.append(ul);
+      }
+      if (stop.alt) body.append(h("p", { class: "alt", text: stop.alt }));
+      if (!stop.optional) body.append(renderAdd(stop));
+    }
+
+    var cls = "stop" + (done ? " is-done" : "") + (stop.optional ? " is-optional" : "") + (empty ? " is-dim" : "");
+    return h("li", { class: cls }, h("div", { class: "rail" }, lvl), h("section", { class: "card", "aria-label": stop.name }, head, body));
+  }
+
+  function renderMilestone() {
+    var c = counts("e");
+    var eDone = c.total > 0 && c.done === c.total;
+    return h("li", { class: "milestone" + (eDone ? " is-done" : "") },
+      h("div", { class: "rail" }, h("span", { class: "flag", "aria-hidden": "true", text: eDone ? "✓" : "E" })),
+      h("div", { class: "ms-text" },
+        h("strong", { text: eDone ? "Elliot is all done" : "Elliot is done after Bonds" }),
+        h("span", { text: eDone ? "The rest of the stops are for Clara." : (c.total - c.done) + " of Elliot's things still to get." })));
+  }
+
+  function render(focusId) {
+    var f = state.filter;
+    var route = document.getElementById("route");
+    route.textContent = "";
+    STOPS.forEach(function (s) { route.append(s.milestone ? renderMilestone() : renderStop(s, f)); });
+
+    var all = counts("all"), e = counts("e"), c = counts("c"), cur = counts(f);
+    var left = cur.total - cur.done;
+    document.getElementById("leftText").textContent = left === 0 ? "All done!" : left + (left === 1 ? " thing" : " things") + " to get";
+    document.getElementById("doneText").textContent = cur.done + " of " + cur.total;
+    document.getElementById("fill").style.width = (cur.total ? (cur.done / cur.total) * 100 : 0) + "%";
+    document.getElementById("nAll").textContent = all.done + "/" + all.total;
+    document.getElementById("nE").textContent = e.done + "/" + e.total;
+    document.getElementById("nC").textContent = c.done + "/" + c.total;
+    document.querySelectorAll(".seg button").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-f") === f));
+    });
+
+    if (focusId) {
+      var el = document.getElementById(focusId);
+      if (el) el.focus({ preventScroll: true });
+    }
+  }
+
+  document.querySelectorAll(".seg button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      state.filter = b.getAttribute("data-f");
+      expanded = {};
+      save(); render();
+    });
+  });
+
+  function renderReset() {
+    var area = document.getElementById("resetArea");
+    area.textContent = "";
+    if (!confirmReset) {
+      area.append(h("button", { type: "button", class: "reset", id: "resetBtn", text: "Clear all ticks",
+        onclick: function () { confirmReset = true; renderReset(); document.getElementById("resetYes").focus(); } }));
+    } else {
+      area.append(h("div", { class: "confirm" },
+        h("span", { text: "Untick everything?" }),
+        h("button", { type: "button", class: "yes", id: "resetYes", text: "Yes, clear",
+          onclick: function () { state.checked = {}; expanded = {}; confirmReset = false; save(); render(); renderReset(); } }),
+        h("button", { type: "button", class: "reset", text: "Cancel",
+          onclick: function () { confirmReset = false; renderReset(); } })));
+    }
+  }
+
+  render();
+  renderReset();
+})();
+</script>
+</body>
+</html>
