@@ -21,6 +21,7 @@
   --elliot:#22609F; --elliot-soft:#E0EBF7;
   --clara:#A53A63; --clara-soft:#F6E2EA;
   --note:#7E4C00; --note-soft:#FBEFD8;
+  --gift:#6A4C9C; --gift-soft:#ECE5F7;
   --font:"Overpass", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono:"Overpass Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
@@ -31,6 +32,7 @@
     --elliot:#86B6EA; --elliot-soft:#1A2E45;
     --clara:#E991B4; --clara-soft:#3B1F2C;
     --note:#E8BC72; --note-soft:#382A13;
+    --gift:#BDA6EA; --gift-soft:#2A2140;
     color-scheme:dark;
   }
 }
@@ -40,6 +42,7 @@
   --elliot:#86B6EA; --elliot-soft:#1A2E45;
   --clara:#E991B4; --clara-soft:#3B1F2C;
   --note:#E8BC72; --note-soft:#382A13;
+  --gift:#BDA6EA; --gift-soft:#2A2140;
   color-scheme:dark;
 }
 
@@ -76,16 +79,17 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 .progress-text span{font-family:var(--mono); font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums}
 .track{height:8px; border-radius:99px; background:var(--line); overflow:hidden; margin-top:6px}
 .fill{height:100%; width:0; background:var(--route); border-radius:99px; transition:width .35s ease}
-.seg{display:grid; grid-template-columns:repeat(3, 1fr); gap:6px}
+.seg{display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:6px}
 .seg button{
   min-height:44px; border:1px solid var(--line); background:var(--surface); border-radius:12px;
-  font-weight:700; font-size:15px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.15; padding:4px 6px;
+  font-weight:700; font-size:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.15; padding:4px 6px;
 }
 .seg button small{font-family:var(--mono); font-weight:500; font-size:11px; color:var(--muted); font-variant-numeric:tabular-nums}
 .seg button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--bg)}
 .seg button[aria-pressed="true"] small{color:inherit; opacity:.8}
 .seg button[data-f="e"][aria-pressed="true"]{background:var(--elliot); border-color:var(--elliot); color:var(--surface)}
 .seg button[data-f="c"][aria-pressed="true"]{background:var(--clara); border-color:var(--clara); color:var(--surface)}
+.seg button[data-f="g"][aria-pressed="true"]{background:var(--gift); border-color:var(--gift); color:var(--surface)}
 
 /* Route */
 .route{list-style:none; margin:18px 0 0; padding:0; display:grid; gap:14px}
@@ -151,6 +155,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 .tag.e{background:var(--elliot-soft); color:var(--elliot)}
 .tag.c{background:var(--clara-soft); color:var(--clara)}
 .tag.b{background:var(--bg); color:var(--muted)}
+.tag.g{background:var(--gift-soft); color:var(--gift)}
 .size{font-family:var(--mono); font-size:12px; color:var(--muted)}
 .inote{font-size:13.5px; color:var(--muted)}
 .del{flex:none; width:48px; border:0; background:none; color:var(--muted); font-size:22px; line-height:1}
@@ -200,8 +205,8 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 <div class="wrap">
   <header class="intro">
     <p class="eyebrow">Macquarie Centre · North Ryde</p>
-    <h1>Europe Christmas trip shopping</h1>
-    <p class="lede">For Elliot and Clara. Park on the roof, start on Level 4 and work down. Every stop is on the same floor or lower, so you never walk back.</p>
+    <h1>Europe trip and Christmas presents</h1>
+    <p class="lede">Clothes for Elliot and Clara, plus Christmas presents. Park on the roof, start on Level 4 and work down to Level 1. Get the food at Woolworths on the way back up to the car.</p>
   </header>
 
   <div class="bar">
@@ -213,6 +218,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       <button type="button" data-f="all" aria-pressed="true">Everyone<small id="nAll">0/12</small></button>
       <button type="button" data-f="e" aria-pressed="false">Elliot<small id="nE">0/5</small></button>
       <button type="button" data-f="c" aria-pressed="false">Clara<small id="nC">0/7</small></button>
+      <button type="button" data-f="g" aria-pressed="false">Presents<small id="nG">0/9</small></button>
     </div>
   </div>
 
@@ -224,6 +230,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       <li><strong>Leather sneakers are not waterproof</strong>Snow will soak them. Look for waterproof kids boots, or buy a waterproofing spray for the sneakers. Kathmandu and Macpac may have kids snow boots, so check on Level 4.</li>
       <li><strong>NeutraFluor 5000 Plus is often kept behind the counter</strong>Ask the pharmacist. Calling the pharmacy first to check stock saves a wasted trip.</li>
       <li><strong>Sizes</strong>Elliot is a Small. Some shops call that adult S, others boys 14, so compare. Clara is 6–8.</li>
+      <li><strong>Dad's shoes: check stock first</strong>Check the JD Sports website or call the shop to make sure they have the grey Handball Spezial in US 9.5.</li>
       <li><strong>Still need for the snow?</strong>Beanie, gloves, thermal socks and a neck warmer. All are at Kathmandu and Macpac on Level 4. Tap "Add item" to add them.</li>
     </ul>
   </section>
@@ -250,6 +257,19 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         { id: "c-pants", who: "c", text: "Pants", size: "6–8", note: "Waterproof like Elliot's? If not, get them at Seed." },
         { id: "c-tops", who: "c", text: "2 long sleeve tops", size: "6–8", note: "Or get them at Seed." }
       ] },
+    { id: "rebel", level: "4", name: "Rebel", where: "Level 4 · near Fitness First",
+      items: [
+        { id: "g-dee", who: "g", for: "Dee", text: "Gym stuff" }
+      ] },
+    { id: "hh", level: "4", name: "Harry Hartog Bookseller", where: "Level 4 · near Fitness First",
+      tip: "If Big W has no Mandalorian book for Phil, look here too.",
+      items: [
+        { id: "g-brody-book", who: "g", for: "Brody", text: "A book (maybe)" }
+      ] },
+    { id: "jd", level: "3", name: "JD Sports", where: "Level 3 · near Zara",
+      items: [
+        { id: "g-dad", who: "g", for: "Dad", text: "adidas Handball Spezial, grey", size: "US 9.5", note: "About $150. Show staff the product on JD's website." }
+      ] },
     { id: "pharm", level: "3", name: "Priceline Pharmacy", where: "Level 3 · near Coles",
       alt: "Not in stock? There is a second Priceline on Level 0, near Service NSW.",
       items: [
@@ -273,14 +293,35 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         { id: "c-tunic", who: "c", text: "Tunic", size: "6–8" },
         { id: "c-shorts", who: "c", text: "1 pair of shorts", size: "6–8" }
       ] },
+    { id: "mecca", level: "2", name: "Mecca", where: "Level 2 · near Cotton On",
+      items: [
+        { id: "g-maddie", who: "g", for: "Maddie", text: "Mecca gift voucher" }
+      ] },
+    { id: "lovisa", level: "2", name: "Lovisa", where: "Level 2",
+      tip: "Nothing you like? Big W and Kmart on Level 1 also sell earrings.",
+      items: [
+        { id: "g-amelia-ear", who: "g", for: "Amelia", text: "Earrings" }
+      ] },
+    { id: "bigw", level: "1", name: "Big W & Kmart", where: "Level 1 · Big W near Dangerfield, Kmart near Centre Court",
+      items: [
+        { id: "g-phil", who: "g", for: "Phil", text: "Star Wars: The Mandalorian graphic novel", note: "Nadine's Big W link. Get the book with all the seasons (Seasons 1–3)." },
+        { id: "g-amelia-daise", who: "g", for: "Amelia", text: "Daise exfoliating body scrub", note: "About $16. Kmart sells it too. Woolworths may have it." },
+        { id: "g-mum", who: "g", for: "Mum", text: "Dirty Santa present" }
+      ] },
     { id: "backup", level: "1", who: "c", optional: true, name: "Backup for shoes", where: "Level 1 · Shoes & Sox or Williams",
       tip: "Only if Myer had nothing. Shoes & Sox is near Hobbyco and has a big kids range. Williams is near Big W.",
       items: [] },
+    { marker: true, icon: "↑", title: "Head back up",
+      text: "Take the escalator up one floor to Level 2 for Woolworths. Food goes last so it stays fresh." },
+    { id: "woolies", level: "2", name: "Woolworths", where: "Level 2 · near Lush",
+      items: [
+        { id: "g-brody-food", who: "g", for: "Brody", text: "A bunch of food" }
+      ] },
     { marker: true, title: "Back to the car",
-      text: "Go back up to Level 4 and out the Timezone doors to the Pink Rooftop Car Park." }
+      text: "Go up to Level 4 and out the Timezone doors to the Pink Rooftop Car Park." }
   ];
 
-  var WHO = { e: "Elliot", c: "Clara", b: "Both" };
+  var WHO = { e: "Elliot", c: "Clara", b: "Both", g: "Presents" };
   var KEY = "europe-trip-shopping-v1";
   var state = { checked: {}, custom: {}, filter: "all" };
   var expanded = {};   // per-visit open/closed overrides
@@ -321,7 +362,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   }
 
   function itemsOf(stop) { return (stop.items || []).concat(state.custom[stop.id] || []); }
-  function matches(it, f) { return f === "all" || it.who === f || it.who === "b"; }
+  function matches(it, f) { return f === "all" || it.who === f || (it.who === "b" && f !== "g"); }
   function allItems() {
     var out = [];
     STOPS.forEach(function (s) { if (!s.milestone && !s.marker) out = out.concat(itemsOf(s)); });
@@ -353,7 +394,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       h("span", { class: "txt" },
         h("span", { class: "name", text: it.text }),
         h("span", { class: "meta" },
-          h("span", { class: "tag " + it.who, text: WHO[it.who] }),
+          h("span", { class: "tag " + it.who, text: it.who === "g" ? (it.for ? "For " + it.for : "Present") : WHO[it.who] }),
           it.size ? h("span", { class: "size", text: "Size " + it.size }) : null),
         it.note ? h("span", { class: "inote", text: it.note }) : null));
     var li = h("li", { class: "item" }, input, label);
@@ -379,9 +420,10 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     }
     var input = h("input", { id: "add-" + stop.id, type: "text", placeholder: "What else?", "aria-label": "New item", autocomplete: "off" });
     var sel = h("select", { id: "who-" + stop.id, "aria-label": "Who is it for" },
-      h("option", { value: "e", text: "Elliot" }), h("option", { value: "c", text: "Clara" }), h("option", { value: "b", text: "Both" }));
+      h("option", { value: "e", text: "Elliot" }), h("option", { value: "c", text: "Clara" }), h("option", { value: "b", text: "Both" }), h("option", { value: "g", text: "Present" }));
     if (state.filter === "c" || stop.who === "c" || stop.id === "seed" || stop.id === "myer") sel.value = "c";
     if (state.filter === "e") sel.value = "e";
+    if (state.filter === "g" || /^(rebel|hh|jd|mecca|lovisa|bigw|woolies)$/.test(stop.id)) sel.value = "g";
     var form = h("form", { class: "add-form" }, input, sel, h("button", { type: "submit", text: "Add" }));
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
@@ -408,6 +450,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     var countText;
     if (stop.id === "backup") countText = done ? "Not needed" : "If needed";
     else if (done) countText = "Done ✓";
+    else if (empty) countText = null;
     else countText = vdone + "/" + vis.length;
 
     var range = stop.level.length > 1;
@@ -418,12 +461,12 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     var head = h("button", { type: "button", class: "card-head", "aria-expanded": String(open), "aria-controls": bodyId, id: "head-" + stop.id,
       onclick: function () { expanded[stop.id] = !open; render("head-" + stop.id); } },
       h("span", { class: "head-text" }, h("span", { class: "shop", text: stop.name }), h("span", { class: "where", text: stop.where })),
-      h("span", { class: "head-right" }, h("span", { class: "count", text: countText }), h("span", { class: "chev", "aria-hidden": "true" })));
+      h("span", { class: "head-right" }, countText ? h("span", { class: "count", text: countText }) : null, h("span", { class: "chev", "aria-hidden": "true" })));
 
     var body = h("div", { class: "card-body", id: bodyId });
     body.hidden = !open;
     if (empty) {
-      body.append(h("p", { class: "empty-msg", text: "Nothing for " + WHO[f] + " here." }));
+      body.append(h("p", { class: "empty-msg", text: f === "g" ? "No presents here." : "Nothing for " + WHO[f] + " here." }));
     } else {
       if (stop.tip) body.append(h("p", { class: "tip", text: stop.tip }));
       if (vis.length) {
@@ -451,7 +494,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 
   function renderMarker(s) {
     return h("li", { class: "milestone marker" },
-      h("div", { class: "rail" }, h("span", { class: "flag", "aria-hidden": "true", text: "P" })),
+      h("div", { class: "rail" }, h("span", { class: "flag", "aria-hidden": "true", text: s.icon || "P" })),
       h("div", { class: "ms-text" }, h("strong", { text: s.title }), h("span", { text: s.text })));
   }
 
@@ -463,7 +506,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       route.append(s.marker ? renderMarker(s) : s.milestone ? renderMilestone() : renderStop(s, f));
     });
 
-    var all = counts("all"), e = counts("e"), c = counts("c"), cur = counts(f);
+    var all = counts("all"), e = counts("e"), c = counts("c"), g = counts("g"), cur = counts(f);
     var left = cur.total - cur.done;
     document.getElementById("leftText").textContent = left === 0 ? "All done!" : left + (left === 1 ? " thing" : " things") + " to get";
     document.getElementById("doneText").textContent = cur.done + " of " + cur.total;
@@ -471,6 +514,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     document.getElementById("nAll").textContent = all.done + "/" + all.total;
     document.getElementById("nE").textContent = e.done + "/" + e.total;
     document.getElementById("nC").textContent = c.done + "/" + c.total;
+    document.getElementById("nG").textContent = g.done + "/" + g.total;
     document.querySelectorAll(".seg button").forEach(function (b) {
       b.setAttribute("aria-pressed", String(b.getAttribute("data-f") === f));
     });
