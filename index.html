@@ -180,6 +180,8 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 .tag.b{background:var(--bg); color:var(--muted)}
 .tag.g{background:var(--gift-soft); color:var(--gift)}
 .tag.t{background:var(--note-soft); color:var(--note)}
+.tag.f{background:var(--route-soft); color:var(--route)}
+.way-text{margin:0; font-size:15px; line-height:1.4}
 .size{font-family:var(--mono); font-size:12px; color:var(--muted)}
 .inote{font-size:13.5px; color:var(--muted)}
 .del{flex:none; width:48px; border:0; background:none; color:var(--muted); font-size:22px; line-height:1}
@@ -263,7 +265,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   <header class="intro">
     <p class="eyebrow">Macquarie Centre · North Ryde</p>
     <h1>Europe trip and Christmas presents</h1>
-    <p class="lede">Clothes for Elliot and Clara, plus Christmas presents. Start on Level 4, work down to Level 1, then get the food at Woolworths on the way back to the car.</p>
+    <p class="lede">Clothes for Elliot and Clara, plus Christmas presents. Start on Level 4 and stop for lunch at Japan City after Kathmandu. Then work down to Level 1, and get the food at Woolworths on the way back to the car.</p>
     <ol class="howto">
       <li><span>Tick things off as you buy them.</span></li>
       <li><span>When a shop is done, the map to the next shop opens.</span></li>
@@ -322,8 +324,8 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       text: "It's the rooftop car park near Talavera Rd. Go in through the Timezone doors onto Level 4. Kathmandu is right there." },
     { id: "l4", level: "4", name: "Kathmandu & Macpac", where: "Level 4 · next to Timezone",
       tip: "Kathmandu is next to Timezone. Macpac is a few doors along, next to Harry Hartog. Check both and compare price and fit.",
-      way: { to: "Rebel", maps: [
-        { src: "maps/01-kathmandu-to-rebel.png", w: 895, h: 838, cap: "Walk along the hall away from Timezone, toward Fitness First. Rebel is at the end of the hall, on your left." }
+      way: { to: "Lunch at Japan City", maps: [
+        { src: "maps/01-kathmandu-to-rebel.png", w: 895, h: 838, cap: "Walk along the hall away from Timezone, toward Fitness First. Japan City is on your right, next to Harry Hartog. (This map goes on to Rebel, your stop after lunch.)" }
       ] },
       items: [
         { id: "e-wpants", who: "e", text: "2 long waterproof pants", size: "S" },
@@ -331,9 +333,16 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         { id: "c-pants", who: "c", text: "Pants", size: "6–8", note: "Waterproof like Elliot's? If not, get them at Seed." },
         { id: "c-tops", who: "c", text: "2 long sleeve tops", size: "6–8", note: "Or get them at Seed." }
       ] },
+    { id: "lunch", level: "4", name: "Lunch: Japan City", where: "Level 4 · next to Harry Hartog",
+      tip: "A Japanese food hall with sushi, noodles, teppanyaki, tempura and desserts, so everyone can choose. Open 10am to 5pm.",
+      alt: "Not keen on Japanese? Level 3 has Nando's, Zeus Street Greek, Bondi Pizza and Mad Mex, near Event Cinemas.",
+      items: [
+        { id: "f-lunch", who: "f", text: "Lunch" }
+      ],
+      way: { to: "Rebel", text: "Keep walking to the end of the hall. Rebel is on your left, near Fitness First." } },
     { id: "rebel", level: "4", name: "Rebel", where: "Level 4 · end of the hall, near Fitness First",
       way: { to: "Harry Hartog", maps: [
-        { src: "maps/02-rebel-to-harry-hartog.png", w: 1332, h: 783, cap: "Head back along the hall toward Timezone. Harry Hartog is a short walk on your left, next to Macpac." }
+        { src: "maps/02-rebel-to-harry-hartog.png", w: 1332, h: 783, cap: "Head back along the hall toward Timezone. Harry Hartog is a short walk on your left, next to Japan City where you had lunch." }
       ] },
       items: [
         { id: "g-dee", who: "g", for: "Dee", text: "Gym stuff" }
@@ -433,7 +442,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       text: "You're done! The lifts between H&M and Zara on Level 2 go up to the L4 Pink car park." }
   ];
 
-  var WHO = { e: "Elliot", c: "Clara", b: "Both", g: "Presents", t: "Return" };
+  var WHO = { e: "Elliot", c: "Clara", b: "Both", g: "Presents", t: "Return", f: "Lunch" };
   var KEY = "europe-trip-shopping-v1";
   var state = { checked: {}, custom: {}, filter: "all", last: null };
   var expanded = {};   // per-visit open/closed overrides
@@ -542,7 +551,8 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         h("span", { class: "way-label", text: "Next: " + way.to }),
         h("button", { type: "button", class: "way-hide", id: "wayhide-" + stop.id, text: "Hide map",
           onclick: function () { wayOpen[stop.id] = false; render("head-" + stop.id); } })));
-    way.maps.forEach(function (m) {
+    if (way.text) panel.append(h("p", { class: "way-text", text: way.text }));
+    (way.maps || []).forEach(function (m) {
       var title = "Map to " + way.to + (m.step ? " (" + m.step + ")" : "");
       panel.append(h("figure", { class: "way-step" },
         h("button", { type: "button", class: "way-img", "aria-label": "Open map full screen",
@@ -843,7 +853,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 
   // Load every map now, so they still show if the signal drops inside the centre
   STOPS.forEach(function (s) {
-    [s.way, s.waySkip].forEach(function (w) { if (w) w.maps.forEach(function (m) { var i = new Image(); i.src = m.src; }); });
+    [s.way, s.waySkip].forEach(function (w) { if (w) (w.maps || []).forEach(function (m) { var i = new Image(); i.src = m.src; }); });
   });
 })();
 </script>
