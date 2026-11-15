@@ -19,3 +19,4 @@ Shops are in walking order through Macquarie Centre (Level 4 down to Level 2).
 - On iPhone: open the link in Safari → Share → Add to Home Screen. It then opens full screen like an app, with its own icon.
 - Ticks save on that phone only.
 - To change the list, edit the `STOPS` list near the bottom of `index.html`.
+- Directions maps live in the `maps` folder. Each shop's `way` entry in `STOPS` points to the map(s) to the next shop.

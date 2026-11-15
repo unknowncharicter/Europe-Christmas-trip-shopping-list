@@ -28,6 +28,7 @@
   --clara:#A53A63; --clara-soft:#F6E2EA;
   --note:#7E4C00; --note-soft:#FBEFD8;
   --gift:#6A4C9C; --gift-soft:#ECE5F7;
+  --map-bg:#FFFFFF; --scrim:#0A1016; --on-scrim:#F2F6F9;
   --font:"Overpass", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono:"Overpass Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
@@ -53,6 +54,7 @@
 }
 
 *{box-sizing:border-box}
+[hidden]{display:none !important}
 html{-webkit-text-size-adjust:100%}
 body{
   margin:0; background:var(--bg); color:var(--ink);
@@ -178,6 +180,29 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 
 .stop.is-dim .card{opacity:.6}
 
+/* Directions to the next shop */
+.way{border-top:1px solid var(--line); background:var(--route-soft); padding:12px 16px 16px; display:grid; gap:10px}
+.way-head{display:flex; align-items:center; justify-content:space-between; gap:12px}
+.way-label{font-family:var(--mono); font-size:12.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--route)}
+.way-hide{border:0; background:none; color:var(--muted); font-weight:700; font-size:14px; min-height:44px; padding:0 0 0 8px}
+.way-step{margin:0; display:grid; gap:8px}
+.way-img{display:block; width:100%; padding:0; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--map-bg); cursor:zoom-in; position:relative}
+.way-img img{display:block; width:100%; height:auto}
+.way-img .zoom{position:absolute; right:8px; bottom:8px; background:var(--ink); color:var(--bg); font-size:12px; font-weight:700; padding:4px 9px; border-radius:99px}
+.way-step figcaption{font-size:15px; line-height:1.4}
+.way-step figcaption strong{font-weight:800}
+.show-way{justify-self:start; margin:0 16px 4px; border:1px solid var(--route); background:none; color:var(--route); border-radius:10px; min-height:44px; padding:0 14px; font-weight:700; font-size:14.5px}
+
+.viewer{position:fixed; inset:0; z-index:50; background:var(--scrim); color:var(--on-scrim); display:flex; flex-direction:column;
+  padding:env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px)}
+.viewer-bar{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:8px 16px}
+.viewer-bar span{font-weight:800; font-size:16px; min-width:0}
+.viewer-bar button{border:1px solid currentColor; background:none; color:inherit; border-radius:10px; min-height:44px; padding:0 16px; font-weight:800}
+.viewer-scroll{flex:1; min-height:0; overflow:auto; display:flex; padding:8px; overscroll-behavior:contain; -webkit-overflow-scrolling:touch}
+.viewer-scroll img{margin:auto; max-width:100%; max-height:100%; background:var(--map-bg); border-radius:8px; cursor:zoom-in}
+.viewer.zoomed .viewer-scroll img{max-width:none; max-height:none; cursor:zoom-out}
+.viewer-hint{margin:0; padding:8px 16px 12px; font-size:13.5px; text-align:center; opacity:.8}
+
 /* Elliot milestone */
 .milestone .rail{padding-top:2px}
 .flag{
@@ -250,6 +275,12 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   </footer>
 </div>
 
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="viewerTitle" hidden>
+  <div class="viewer-bar"><span id="viewerTitle">Map</span><button type="button" id="viewerClose">Close</button></div>
+  <div class="viewer-scroll" id="viewerScroll"><img id="viewerImg" alt=""></div>
+  <p class="viewer-hint" id="viewerHint">Tap the map to zoom in. Drag to move around.</p>
+</div>
+
 <script>
 (function () {
   "use strict";
@@ -258,33 +289,46 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   var STOPS = [
     { marker: true, title: "Park: Pink Rooftop Car Park",
       text: "Follow the signs for Timezone. Go in through the Timezone doors onto Level 4. Kathmandu and Macpac are close by." },
-    { id: "l4", level: "4", name: "Kathmandu & Macpac", where: "Level 4 · near JB Hi-Fi",
-      tip: "The two shops are next to each other. Check both and compare price and fit.",
+    { id: "l4", level: "4", name: "Kathmandu & Macpac", where: "Level 4 · next to Timezone",
+      tip: "Kathmandu is next to Timezone. Macpac is a few doors along, next to Harry Hartog. Check both and compare price and fit.",
+      way: { to: "Rebel", maps: [
+        { src: "maps/01-kathmandu-to-rebel.png", w: 895, h: 838, cap: "Walk along the hall away from Timezone, toward Fitness First. Rebel is at the end of the hall, on your left." }
+      ] },
       items: [
         { id: "e-wpants", who: "e", text: "2 long waterproof pants", size: "S" },
         { id: "e-tops", who: "e", text: "2 long sleeve tops", size: "S" },
         { id: "c-pants", who: "c", text: "Pants", size: "6–8", note: "Waterproof like Elliot's? If not, get them at Seed." },
         { id: "c-tops", who: "c", text: "2 long sleeve tops", size: "6–8", note: "Or get them at Seed." }
       ] },
-    { id: "rebel", level: "4", name: "Rebel", where: "Level 4 · near Fitness First",
+    { id: "rebel", level: "4", name: "Rebel", where: "Level 4 · end of the hall, near Fitness First",
+      way: { to: "Harry Hartog", maps: [
+        { src: "maps/02-rebel-to-harry-hartog.png", w: 1332, h: 783, cap: "Head back along the hall toward Timezone. Harry Hartog is a short walk on your left, next to Macpac." }
+      ] },
       items: [
         { id: "g-dee", who: "g", for: "Dee", text: "Gym stuff" }
       ] },
-    { id: "hh", level: "4", name: "Harry Hartog Bookseller", where: "Level 4 · near Fitness First",
+    { id: "hh", level: "4", name: "Harry Hartog Bookseller", where: "Level 4 · next to Macpac",
+      way: { to: "JD Sports, Level 3", maps: [
+        { src: "maps/03-harry-hartog-to-escalator.png", w: 865, h: 571, step: "Level 4", cap: "Keep walking toward Timezone and go around the oval. Take the escalator on your right, next to Telstra, down to Level 3." },
+        { src: "maps/04-escalator-to-jd-sports.png", w: 1806, h: 739, step: "Level 3", cap: "Walk straight along the hall. You pass Bonds on your right. JD Sports is at the far end on your right, next to Hype DC." }
+      ] },
       tip: "If Big W has no Mandalorian book for Phil, look here too.",
       items: [
         { id: "g-brody-book", who: "g", for: "Brody", text: "A book (maybe)" }
       ] },
-    { id: "jd", level: "3", name: "JD Sports", where: "Level 3 · near Zara",
+    { id: "jd", level: "3", name: "JD Sports", where: "Level 3 · next to Hype DC",
+      way: { to: "Priceline", maps: [
+        { src: "maps/05-jd-sports-to-priceline.png", w: 808, h: 947, cap: "Walk down the hall past The Athlete's Foot. Priceline is on your left, just after Oz Hair & Beauty." }
+      ] },
       items: [
         { id: "g-dad", who: "g", for: "Dad", text: "adidas Handball Spezial, grey", size: "US 9.5", note: "About $150. Show staff the product on JD's website." }
       ] },
-    { id: "pharm", level: "3", name: "Priceline Pharmacy", where: "Level 3 · near Coles",
+    { id: "pharm", level: "3", name: "Priceline Pharmacy", where: "Level 3 · down the hall from JD Sports",
       alt: "Not in stock? There is a second Priceline on Level 0, near Service NSW.",
       items: [
         { id: "e-paste", who: "e", text: "NeutraFluor 5000 Plus toothpaste", note: "For braces. Ask at the pharmacy counter." }
       ] },
-    { id: "bonds", level: "3", name: "Bonds", where: "Level 3 · near Myer",
+    { id: "bonds", level: "3", name: "Bonds", where: "Level 3 · near Glassons, by the escalator",
       items: [
         { id: "e-undies", who: "e", text: "14 undies", size: "S" },
         { id: "e-pjs", who: "e", text: "Winter PJs", size: "S" },
@@ -335,6 +379,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   var state = { checked: {}, custom: {}, filter: "all" };
   var expanded = {};   // per-visit open/closed overrides
   var addOpen = {};
+  var wayOpen = {};   // per-visit show/hide overrides for directions
   var confirmReset = false;
 
   try {
@@ -388,13 +433,37 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     return items.length > 0 && items.every(function (it) { return state.checked[it.id]; });
   }
 
+  function nextStopOf(stop) {
+    var i = STOPS.indexOf(stop);
+    for (var j = i + 1; j < STOPS.length; j++) if (!STOPS[j].marker && !STOPS[j].milestone) return STOPS[j];
+    return null;
+  }
+
+  function renderWay(stop) {
+    var panel = h("div", { class: "way", id: "way-" + stop.id },
+      h("div", { class: "way-head" },
+        h("span", { class: "way-label", text: "Next: " + stop.way.to }),
+        h("button", { type: "button", class: "way-hide", id: "wayhide-" + stop.id, text: "Hide map",
+          onclick: function () { wayOpen[stop.id] = false; render("head-" + stop.id); } })));
+    stop.way.maps.forEach(function (m) {
+      var title = "Map to " + stop.way.to + (m.step ? " (" + m.step + ")" : "");
+      panel.append(h("figure", { class: "way-step" },
+        h("button", { type: "button", class: "way-img", "aria-label": "Open map full screen",
+          onclick: function () { openViewer(m, title); } },
+          h("img", { src: m.src, alt: "Map: " + m.cap, width: m.w, height: m.h }),
+          h("span", { class: "zoom", "aria-hidden": "true", text: "Tap to enlarge" })),
+        h("figcaption", null, m.step ? h("strong", { text: m.step + ": " }) : null, m.cap)));
+    });
+    return panel;
+  }
+
   function renderItem(it, stop) {
     var id = "chk-" + it.id;
     var input = h("input", { type: "checkbox", id: id, class: "chk" });
     input.checked = !!state.checked[it.id];
     input.addEventListener("change", function () {
       if (input.checked) state.checked[it.id] = true; else delete state.checked[it.id];
-      if (stopDone(stop)) delete expanded[stop.id];
+      if (stopDone(stop)) { delete expanded[stop.id]; delete wayOpen[stop.id]; }
       if (stop.id === "myer") delete expanded.backup;
       save(); render(id);
     });
@@ -466,6 +535,10 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     var lvl = h("span", { class: "lvl" + (range ? " range" : ""), "aria-label": "Level " + stop.level },
       range ? null : h("span", { class: "l", text: "L" }), stop.level);
 
+    var next = nextStopOf(stop);
+    var wayAuto = done && !!next && !stopDone(next);
+    var showWay = !!stop.way && (wayOpen[stop.id] !== undefined ? wayOpen[stop.id] : wayAuto);
+
     var bodyId = "body-" + stop.id;
     var head = h("button", { type: "button", class: "card-head", "aria-expanded": String(open), "aria-controls": bodyId, id: "head-" + stop.id,
       onclick: function () { expanded[stop.id] = !open; render("head-" + stop.id); } },
@@ -484,11 +557,13 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         body.append(ul);
       }
       if (stop.alt) body.append(h("p", { class: "alt", text: stop.alt }));
+      if (stop.way && !showWay) body.append(h("button", { type: "button", class: "show-way", id: "showway-" + stop.id,
+        text: "Show the way to " + stop.way.to, onclick: function () { wayOpen[stop.id] = true; render("wayhide-" + stop.id); } }));
       if (!stop.optional) body.append(renderAdd(stop));
     }
 
     var cls = "stop" + (done ? " is-done" : "") + (stop.optional ? " is-optional" : "") + (empty ? " is-dim" : "");
-    return h("li", { class: cls }, h("div", { class: "rail" }, lvl), h("section", { class: "card", "aria-label": stop.name }, head, body));
+    return h("li", { class: cls }, h("div", { class: "rail" }, lvl), h("section", { class: "card", "aria-label": stop.name }, head, body, showWay ? renderWay(stop) : null));
   }
 
   function renderMilestone() {
@@ -558,8 +633,54 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     }
   }
 
+  // Full-screen map viewer
+  var viewer = document.getElementById("viewer");
+  var vImg = document.getElementById("viewerImg");
+  var vScroll = document.getElementById("viewerScroll");
+  var vHint = document.getElementById("viewerHint");
+  var lastFocus = null;
+  function openViewer(m, title) {
+    lastFocus = document.activeElement;
+    viewer.classList.remove("zoomed");
+    vImg.style.width = "";
+    vImg.src = m.src;
+    vImg.alt = "Map: " + m.cap;
+    document.getElementById("viewerTitle").textContent = title;
+    vHint.textContent = "Tap the map to zoom in. Drag to move around.";
+    viewer.hidden = false;
+    document.documentElement.style.overflow = "hidden";
+    document.getElementById("viewerClose").focus();
+  }
+  function closeViewer() {
+    viewer.hidden = true;
+    document.documentElement.style.overflow = "";
+    if (lastFocus && document.body.contains(lastFocus)) lastFocus.focus({ preventScroll: true });
+  }
+  vImg.addEventListener("click", function (ev) {
+    if (viewer.classList.contains("zoomed")) {
+      viewer.classList.remove("zoomed"); vImg.style.width = "";
+      vHint.textContent = "Tap the map to zoom in. Drag to move around.";
+      return;
+    }
+    var r = vImg.getBoundingClientRect();
+    var rx = (ev.clientX - r.left) / r.width, ry = (ev.clientY - r.top) / r.height;
+    var w = Math.max(vImg.naturalWidth || 0, vScroll.clientWidth * 2);
+    viewer.classList.add("zoomed");
+    vImg.style.width = w + "px";
+    vScroll.scrollLeft = rx * w - vScroll.clientWidth / 2;
+    vScroll.scrollTop = ry * vImg.offsetHeight - vScroll.clientHeight / 2;
+    vHint.textContent = "Tap again to fit the screen.";
+  });
+  document.getElementById("viewerClose").addEventListener("click", closeViewer);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !viewer.hidden) closeViewer(); });
+
   render();
   renderReset();
+
+  // Load every map now, so they still show if the signal drops inside the centre
+  STOPS.forEach(function (s) {
+    if (s.way) s.way.maps.forEach(function (m) { var i = new Image(); i.src = m.src; });
+  });
 })();
 </script>
 </body>
