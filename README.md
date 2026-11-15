@@ -7,7 +7,7 @@ Shops are in walking order through Macquarie Centre (Level 4 down to Level 2).
 
 **Easiest (drag and drop)**
 1. Go to https://app.netlify.com/drop
-2. Drag `index.html` (or this whole folder) onto the page.
+2. Drag this whole folder onto the page (it has the app plus its home screen icons).
 3. Netlify gives you a link. Open it on your phone.
 
 **From GitHub**
@@ -16,6 +16,6 @@ Shops are in walking order through Macquarie Centre (Level 4 down to Level 2).
 3. Deploy.
 
 ## Tips
-- On iPhone: open the link in Safari → Share → Add to Home Screen.
+- On iPhone: open the link in Safari → Share → Add to Home Screen. It then opens full screen like an app, with its own icon.
 - Ticks save on that phone only.
 - To change the list, edit the `STOPS` list near the bottom of `index.html`.
