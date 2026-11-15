@@ -182,6 +182,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 .tag.c{background:var(--clara-soft); color:var(--clara)}
 .tag.b{background:var(--bg); color:var(--muted)}
 .tag.g{background:var(--gift-soft); color:var(--gift)}
+.tag.t{background:var(--note-soft); color:var(--note)}
 .size{font-family:var(--mono); font-size:12px; color:var(--muted)}
 .inote{font-size:13.5px; color:var(--muted)}
 .del{flex:none; width:48px; border:0; background:none; color:var(--muted); font-size:22px; line-height:1}
@@ -297,7 +298,6 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     <ul>
       <li><strong>Check stock before you go</strong>Tap the shop names under each item to open that shop's website. Where the site lets you, pick Macquarie Centre as your store.</li>
       <li><strong>Leather sneakers are not waterproof</strong>Snow will soak them. Look for waterproof kids boots, or buy a waterproofing spray for the sneakers. Kathmandu and Macpac may have kids snow boots, so check on Level 4.</li>
-      <li><strong>NeutraFluor 5000 Plus is often kept behind the counter</strong>Ask the pharmacist. Calling the pharmacy first to check stock saves a wasted trip.</li>
       <li><strong>Sizes</strong>Elliot is a Small. Some shops call that adult S, others boys 14, so compare. Clara is 6–8.</li>
       <li><strong>Dad's shoes: check stock first</strong>Check the JD Sports website or call the shop to make sure they have the grey Handball Spezial in US 9.5.</li>
       <li><strong>Still need for the snow?</strong>Beanie, gloves, thermal socks and a neck warmer. All are at Kathmandu and Macpac on Level 4. Tap "Add item" to add them.</li>
@@ -352,19 +352,11 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         { id: "g-brody-book", who: "g", for: "Brody", text: "A book" }
       ] },
     { id: "jd", level: "3", name: "JD Sports", where: "Level 3 · next to Hype DC",
-      way: { to: "Priceline", maps: [
-        { src: "maps/05-jd-sports-to-priceline.png", w: 808, h: 947, cap: "Walk down the hall past The Athlete's Foot. Priceline is on your left, just after Oz Hair & Beauty." }
+      way: { to: "Bonds", maps: [
+        { src: "maps/06-priceline-to-bonds.png", w: 1775, h: 841, cap: "Head back along the main hall the way you came, past Lids. Bonds is just past Glassons, on your left. (This map starts at Priceline, just down the hall from JD Sports.)" }
       ] },
       items: [
         { id: "g-dad", who: "g", for: "Dad", text: "adidas Handball Spezial, grey", size: "US 9.5", note: "About $150. Show staff the product on JD's website." }
-      ] },
-    { id: "pharm", level: "3", name: "Priceline Pharmacy", where: "Level 3 · down the hall from JD Sports",
-      way: { to: "Bonds", maps: [
-        { src: "maps/06-priceline-to-bonds.png", w: 1775, h: 841, cap: "Walk back up the hall past Novo Shoes. At the top, turn left along the main hall and go past Lids. Bonds is just past Glassons, on your left." }
-      ] },
-      alt: "Not in stock? There is a second Priceline on Level 0, near Service NSW.",
-      items: [
-        { id: "e-paste", who: "e", text: "NeutraFluor 5000 Plus toothpaste", note: "For braces. Ask at the pharmacy counter." }
       ] },
     { id: "bonds", level: "3", name: "Bonds", where: "Level 3 · near Glassons, by the escalator",
       way: { to: "Myer", maps: [
@@ -383,6 +375,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         { src: "maps/08-myer-to-seed.png", w: 1650, h: 760, step: "Level 2", cap: "Leave Myer on Level 2, by Adairs. You pass Lovisa on your left (you come back to it later). Walk along the hall past Witchery and Cotton On. Seed Heritage is on your right." }
       ] },
       items: [
+        { id: "t-return", who: "t", text: "Return pants", note: "Bring the pants and the receipt." },
         { id: "c-shoes", who: "c", text: "Leather sneakers for the snow", note: "Bring Clara to try them on with thick socks." }
       ] },
     { id: "seed", level: "2", name: "Seed Heritage", where: "Level 2 · past Cotton On",
@@ -453,7 +446,6 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     "g-dee": [["Rebel clothes", "https://www.rebelsport.com.au/fitness/hybrid-training/hybrid-training-clothing"], ["Rebel gym gear", "https://www.rebelsport.com.au/ptp"]],
     "g-phil": [["Harry Hartog", "https://www.harryhartog.com.au/products/star-wars-the-mandalorian-a-graphic-novel-star-wars-9781761215797"]],
     "g-dad": [["JD Sports", "https://www.jd-sports.com.au/products/handball-spezial-121576842?variants=49621180776663"]],
-    "e-paste": [["Priceline", "https://www.priceline.com.au/search/?q=neutrafluor"]],
     "e-undies": [["Bonds", "https://www.bonds.com.au/mens/underwear/trunks.html"]],
     "e-pjs": [["Bonds", "https://www.bonds.com.au/mens/sleep.html"]],
     "c-undies": [["Bonds", "https://www.bonds.com.au/kids/girls-underwear.html"]],
@@ -466,7 +458,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     "g-amelia-daise": [["Big W", "https://www.bigw.com.au/brands/daise"], ["Kmart", "https://www.kmart.com.au/product/daise-exfoliating-body-scrub-510g-coconut-glow-43675395/"]]
   };
 
-  var WHO = { e: "Elliot", c: "Clara", b: "Both", g: "Presents" };
+  var WHO = { e: "Elliot", c: "Clara", b: "Both", g: "Presents", t: "Return" };
   var KEY = "europe-trip-shopping-v1";
   var state = { checked: {}, custom: {}, filter: "all", last: null };
   var expanded = {};   // per-visit open/closed overrides
