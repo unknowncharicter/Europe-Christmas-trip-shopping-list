@@ -287,8 +287,8 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 
   // Shops in walking order. Locations from the Macquarie Centre store directory.
   var STOPS = [
-    { marker: true, title: "Park: Pink Rooftop Car Park",
-      text: "Follow the signs for Timezone. Go in through the Timezone doors onto Level 4. Kathmandu and Macpac are close by." },
+    { marker: true, title: "Park: L4 Pink car park",
+      text: "It's the rooftop car park near Talavera Rd. Go in through the Timezone doors onto Level 4. Kathmandu is right there." },
     { id: "l4", level: "4", name: "Kathmandu & Macpac", where: "Level 4 · next to Timezone",
       tip: "Kathmandu is next to Timezone. Macpac is a few doors along, next to Harry Hartog. Check both and compare price and fit.",
       way: { to: "Rebel", maps: [
@@ -366,36 +366,51 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         { id: "g-maddie", who: "g", for: "Maddie", text: "Mecca gift voucher" }
       ] },
     { id: "lovisa", level: "2", name: "Lovisa", where: "Level 2 · next to Billini, by Myer",
+      way: { to: "Big W, Level 1", maps: [
+        { src: "maps/11-lovisa-to-big-w.png", w: 703, h: 782, cap: "Walk past T2 and PERA to the escalator by Oxford and go down to Level 1. Walk straight down the hall past Wittner, Lowes and Williams. Big W is at the end." }
+      ] },
       tip: "Nothing you like? Big W and Kmart on Level 1 also sell earrings.",
       items: [
         { id: "g-amelia-ear", who: "g", for: "Amelia", text: "Earrings" }
       ] },
-    { id: "bigw", level: "1", name: "Big W", where: "Level 1 · near Dangerfield",
+    { id: "bigw", level: "1", name: "Big W", where: "Level 1 · end of the hall, by Dangerfield",
       tip: "Try to get all three here. Then you can skip Kmart.",
+      way: { to: "Kmart", maps: [
+        { src: "maps/12-big-w-to-kmart.png", w: 442, h: 801, cap: "Walk out of Big W and straight up the long hall, past The Reject Shop, Best & Less and HSBC. Kmart is at the far end, past Centre Court." }
+      ] },
+      waySkip: { to: "Woolworths, Level 2", maps: [
+        { src: "maps/14-big-w-to-escalator.png", w: 1479, h: 811, cap: "Walk out of Big W. The escalator up to Level 2 is just ahead on your right, by The Reject Shop. At the top, follow the signs to Woolworths, near BWS and the food court." }
+      ] },
       items: [
         { id: "g-phil", who: "g", for: "Phil", text: "Star Wars: The Mandalorian graphic novel", note: "Nadine's Big W link. Get the book with all the seasons (Seasons 1–3)." },
         { id: "g-amelia-daise", who: "g", for: "Amelia", text: "Daise exfoliating body scrub", note: "About $16. If Big W doesn't have it, Kmart does." },
         { id: "g-mum", who: "g", for: "Mum", text: "Dirty Santa present" }
       ] },
-    { id: "kmart", level: "1", optional: true, name: "Kmart", where: "Level 1 · near Centre Court",
+    { id: "kmart", level: "1", optional: true, name: "Kmart", where: "Level 1 · far end, past Centre Court",
+      way: { to: "Woolworths, Level 2", maps: [
+        { src: "maps/13-kmart-to-escalator.png", w: 696, h: 989, cap: "Walk back down the long hall toward Big W. Take the escalator by The Reject Shop up to Level 2. At the top, follow the signs to Woolworths, near BWS and the food court." }
+      ] },
       tip: "Only if Big W didn't have these. Kmart sells the Daise scrub.",
       covers: ["g-amelia-daise", "g-mum"] },
     { id: "backup", level: "1", optional: true, name: "Backup for shoes", where: "Level 1 · Shoes & Sox or Williams",
-      tip: "Only if Myer had nothing. Shoes & Sox is near Hobbyco and has a big kids range. Williams is near Big W.",
+      tip: "Only if Myer had nothing. Williams is right by Big W. Shoes & Sox is near Hobbyco, next to Kmart, and has a big kids range.",
       covers: ["c-shoes"] },
     { marker: true, icon: "↑", title: "Head back up",
-      text: "Take the escalator up one floor to Level 2 for Woolworths. Food goes last so it stays fresh." },
-    { id: "woolies", level: "2", name: "Woolworths", where: "Level 2 · near Lush",
+      text: "Take the escalator by The Reject Shop up to Level 2 for Woolworths. Food goes last so it stays fresh." },
+    { id: "woolies", level: "2", name: "Woolworths", where: "Level 2 · near BWS and the food court",
+      way: { to: "the car", maps: [
+        { src: "maps/15-woolworths-to-car-park.png", w: 711, h: 778, cap: "Walk out past BWS and Typo. Go round Oxford, then turn right along the hall past PERA and Cotton On. Take the lifts between H&M and Zara up to the L4 Pink car park." }
+      ] },
       items: [
         { id: "g-brody-food", who: "g", for: "Brody", text: "A bunch of food" }
       ] },
     { marker: true, title: "Back to the car",
-      text: "Go up to Level 4 and out the Timezone doors to the Pink Rooftop Car Park." }
+      text: "You're done! The lifts between H&M and Zara on Level 2 go up to the L4 Pink car park." }
   ];
 
   var WHO = { e: "Elliot", c: "Clara", b: "Both", g: "Presents" };
   var KEY = "europe-trip-shopping-v1";
-  var state = { checked: {}, custom: {}, filter: "all" };
+  var state = { checked: {}, custom: {}, filter: "all", last: null };
   var expanded = {};   // per-visit open/closed overrides
   var addOpen = {};
   var wayOpen = {};   // per-visit show/hide overrides for directions
@@ -407,6 +422,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       state.checked = saved.checked || {};
       state.custom = saved.custom || {};
       state.filter = saved.filter || "all";
+      state.last = saved.last || null;
     }
   } catch (e) {}
 
@@ -496,6 +512,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     input.checked = !!state.checked[it.id];
     input.addEventListener("change", function () {
       if (input.checked) state.checked[it.id] = true; else delete state.checked[it.id];
+      state.last = stop.id;   // the shop you are standing in
       STOPS.forEach(function (s) {
         if (s.marker || s.milestone) return;
         var ids = itemsOf(s).map(function (x) { return x.id; }).concat(s.covers || []);
@@ -571,11 +588,10 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     var lvl = h("span", { class: "lvl" + (range ? " range" : ""), "aria-label": "Level " + stop.level },
       range ? null : h("span", { class: "l", text: "L" }), stop.level);
 
-    var next = nextStopOf(stop, true);
     var imm = nextStopOf(stop, false);
     // waySkip: directions to use when the very next shop is "only if needed" and no longer needed
     var way = (stop.waySkip && imm && imm.optional && stopDone(imm)) ? stop.waySkip : stop.way;
-    var wayAuto = done && (!next || !stopDone(next));
+    var wayAuto = done && state.last === stop.id;
     var showWay = !!way && (wayOpen[stop.id] !== undefined ? wayOpen[stop.id] : wayAuto);
 
     var bodyId = "body-" + stop.id;
@@ -666,7 +682,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       area.append(h("div", { class: "confirm" },
         h("span", { text: "Untick everything?" }),
         h("button", { type: "button", class: "yes", id: "resetYes", text: "Yes, clear",
-          onclick: function () { state.checked = {}; expanded = {}; confirmReset = false; save(); render(); renderReset(); } }),
+          onclick: function () { state.checked = {}; state.last = null; expanded = {}; wayOpen = {}; confirmReset = false; save(); render(); renderReset(); } }),
         h("button", { type: "button", class: "reset", text: "Cancel",
           onclick: function () { confirmReset = false; renderReset(); } })));
     }
