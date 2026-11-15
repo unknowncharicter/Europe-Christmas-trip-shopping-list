@@ -159,7 +159,10 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 .empty-msg{margin:0; padding:0 16px 14px; font-size:14px; color:var(--muted); font-style:italic}
 
 .items{list-style:none; margin:0; padding:0}
-.item{position:relative; border-top:1px solid var(--line); display:flex; align-items:stretch}
+.item{position:relative; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; align-items:stretch}
+.links{flex-basis:100%; display:flex; flex-wrap:wrap; gap:8px; padding:0 16px 12px 54px; margin-top:-4px}
+.shop-link{display:inline-flex; align-items:center; gap:5px; min-height:40px; padding:0 13px; border:1px solid var(--line); border-radius:99px; background:var(--surface); color:var(--route); font-size:13.5px; font-weight:700; text-decoration:none}
+.shop-link::after{content:"↗"; font-size:12px}
 .chk{position:absolute; opacity:0; width:1px; height:1px; pointer-events:none}
 .item-label{flex:1; min-width:0; display:grid; grid-template-columns:26px minmax(0, 1fr); gap:12px; padding:13px 16px; cursor:pointer; align-items:start}
 .box{
@@ -248,7 +251,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 /* Tap feedback on touch screens */
 @media (hover:none){
   .card-head:active, .seg button:active, .next-btn:active, .show-way:active, .add-btn:active,
-  .way-hide:active, .wake:active, .reset:active, .viewer-bar button:active{opacity:.6}
+  .way-hide:active, .wake:active, .reset:active, .viewer-bar button:active, .shop-link:active{opacity:.6}
   .item-label:active{background:var(--bg)}
 }
 @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
@@ -292,6 +295,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   <section class="tips" aria-labelledby="tipsTitle">
     <h2 id="tipsTitle">Good to know</h2>
     <ul>
+      <li><strong>Check stock before you go</strong>Tap the shop names under each item to open that shop's website. Where the site lets you, pick Macquarie Centre as your store.</li>
       <li><strong>Leather sneakers are not waterproof</strong>Snow will soak them. Look for waterproof kids boots, or buy a waterproofing spray for the sneakers. Kathmandu and Macpac may have kids snow boots, so check on Level 4.</li>
       <li><strong>NeutraFluor 5000 Plus is often kept behind the counter</strong>Ask the pharmacist. Calling the pharmacy first to check stock saves a wasted trip.</li>
       <li><strong>Sizes</strong>Elliot is a Small. Some shops call that adult S, others boys 14, so compare. Clara is 6–8.</li>
@@ -344,7 +348,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         { src: "maps/04-escalator-to-jd-sports.png", w: 1806, h: 739, step: "Level 3", cap: "Walk straight along the hall. You pass Bonds on your right. JD Sports is at the far end on your right, next to Hype DC." }
       ] },
       items: [
-        { id: "g-phil", who: "g", for: "Phil", text: "Star Wars: The Mandalorian: A Graphic Novel", note: "Paperback, $19.99." },
+        { id: "g-phil", who: "g", for: "Phil", text: "Star Wars: The Mandalorian: A Graphic Novel", note: "Paperback, $19.99. Big W only sells it online, so get it here." },
         { id: "g-brody-book", who: "g", for: "Brody", text: "A book" }
       ] },
     { id: "jd", level: "3", name: "JD Sports", where: "Level 3 · next to Hype DC",
@@ -439,6 +443,28 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     { marker: true, title: "Back to the car",
       text: "You're done! The lifts between H&M and Zara on Level 2 go up to the L4 Pink car park." }
   ];
+
+  // Store web pages, to check stock before going
+  var LINKS = {
+    "e-wpants": [["Kathmandu", "https://www.kathmandu.com.au/products/trailhead-mns-rain-pants-v3-black"], ["Macpac", "https://www.macpac.com.au/macpac-mens-jetstream-rain-pants/115221.html"]],
+    "e-tops": [["Kathmandu", "https://www.kathmandu.com.au/collections/kids-baselayers"], ["Macpac", "https://www.macpac.com.au/macpac-mens-geothermal-long-sleeve-top/119180-SCS00-M.html"]],
+    "c-pants": [["Macpac", "https://www.macpac.com.au/macpac-kids-jetstream-rain-pants/119240.html"], ["Kathmandu", "https://www.kathmandu.com.au/products/pocket-it-2l-kids-rain-pants-v3-black"]],
+    "c-tops": [["Kathmandu", "https://www.kathmandu.com.au/collections/kids-baselayers"], ["Macpac", "https://www.macpac.com.au/macpac-kids-geothermal-long-sleeve-top/119192.html"]],
+    "g-dee": [["Rebel clothes", "https://www.rebelsport.com.au/fitness/hybrid-training/hybrid-training-clothing"], ["Rebel gym gear", "https://www.rebelsport.com.au/ptp"]],
+    "g-phil": [["Harry Hartog", "https://www.harryhartog.com.au/products/star-wars-the-mandalorian-a-graphic-novel-star-wars-9781761215797"]],
+    "g-dad": [["JD Sports", "https://www.jd-sports.com.au/products/handball-spezial-121576842?variants=49621180776663"]],
+    "e-paste": [["Priceline", "https://www.priceline.com.au/search/?q=neutrafluor"]],
+    "e-undies": [["Bonds", "https://www.bonds.com.au/mens/underwear/trunks.html"]],
+    "e-pjs": [["Bonds", "https://www.bonds.com.au/mens/sleep.html"]],
+    "c-undies": [["Bonds", "https://www.bonds.com.au/kids/girls-underwear.html"]],
+    "c-pjs": [["Bonds", "https://www.bonds.com.au/kids/sleep.html"]],
+    "c-shoes": [["Myer girls shoes", "https://www.myer.com.au/c/kidsbaby/kids-girls/kids-girls-shoes"], ["Myer leather sneakers", "https://www.myer.com.au/buy/kids-white-sneakers"]],
+    "c-tunic": [["Seed", "https://www.seedheritage.com/girl/clothing/"]],
+    "c-shorts": [["Seed", "https://www.seedheritage.com/girl/clothing/shorts/"]],
+    "g-maddie": [["Mecca", "https://www.mecca.com/en-au/gift-cards/purchase/"]],
+    "g-amelia-ear": [["Lovisa", "https://www.lovisa.com.au/collections/earrings"]],
+    "g-amelia-daise": [["Big W", "https://www.bigw.com.au/brands/daise"], ["Kmart", "https://www.kmart.com.au/product/daise-exfoliating-body-scrub-510g-coconut-glow-43675395/"]]
+  };
 
   var WHO = { e: "Elliot", c: "Clara", b: "Both", g: "Presents" };
   var KEY = "europe-trip-shopping-v1";
@@ -586,6 +612,13 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
           it.size ? h("span", { class: "size", text: "Size " + it.size }) : null),
         it.note ? h("span", { class: "inote", text: it.note }) : null));
     var li = h("li", { class: "item" }, input, label);
+    if (LINKS[it.id]) {
+      var row = h("div", { class: "links" });
+      LINKS[it.id].forEach(function (l) {
+        row.append(h("a", { class: "shop-link", href: l[1], target: "_blank", rel: "noopener", text: l[0], "aria-label": "Check " + it.text + " on the " + l[0] + " website" }));
+      });
+      li.append(row);
+    }
     if (it.custom) {
       li.append(h("button", {
         type: "button", class: "del", "aria-label": "Remove " + it.text, text: "×",
