@@ -1,6 +1,6 @@
 // Keeps a copy of the app on the phone so it still opens with no signal in the centre.
 // Change VERSION whenever the app or maps change, so phones pick up the new copy.
-const VERSION = "trip-shopping-v8";
+const VERSION = "trip-shopping-v9";
 const FILES = [
   "./",
   "index.html",
@@ -12,7 +12,7 @@ const FILES = [
   "maps/03-harry-hartog-to-escalator.png",
   "maps/04-escalator-to-jd-sports.png",
   "maps/05-jd-sports-to-breadtop.png",
-  "maps/06-priceline-to-bonds.png",
+  "maps/06-breadtop-to-bonds.png",
   "maps/07-bonds-to-myer.png",
   "maps/08-myer-to-seed.png",
   "maps/09-seed-to-mecca.png",
