@@ -324,11 +324,17 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         { id: "g-dad", who: "g", for: "Dad", text: "adidas Handball Spezial, grey", size: "US 9.5", note: "About $150. Show staff the product on JD's website." }
       ] },
     { id: "pharm", level: "3", name: "Priceline Pharmacy", where: "Level 3 · down the hall from JD Sports",
+      way: { to: "Bonds", maps: [
+        { src: "maps/06-priceline-to-bonds.png", w: 1775, h: 841, cap: "Walk back up the hall past Novo Shoes. At the top, turn left along the main hall and go past Lids. Bonds is just past Glassons, on your left." }
+      ] },
       alt: "Not in stock? There is a second Priceline on Level 0, near Service NSW.",
       items: [
         { id: "e-paste", who: "e", text: "NeutraFluor 5000 Plus toothpaste", note: "For braces. Ask at the pharmacy counter." }
       ] },
     { id: "bonds", level: "3", name: "Bonds", where: "Level 3 · near Glassons, by the escalator",
+      way: { to: "Myer", maps: [
+        { src: "maps/07-bonds-to-myer.png", w: 1420, h: 710, cap: "Myer is just across the hall. Walk past Glassons, cross the hall and go into Myer between Foot Locker and Dotti." }
+      ] },
       items: [
         { id: "e-undies", who: "e", text: "14 undies", size: "S" },
         { id: "e-pjs", who: "e", text: "Winter PJs", size: "S" },
@@ -336,34 +342,47 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         { id: "c-pjs", who: "c", text: "Winter PJs", size: "6–8" }
       ] },
     { milestone: "e" },
-    { id: "myer", level: "3–2", name: "Myer kids shoes", where: "Levels 3 & 2 · next to Bonds",
-      tip: "Ask staff which floor has kids shoes. Leave Myer on Level 2 to reach Seed.",
+    { id: "myer", level: "3–2", name: "Myer kids shoes", where: "Levels 3 & 2 · across the hall from Bonds",
+      tip: "Ask staff which floor has kids shoes. Then go down to Level 2 inside Myer.",
+      way: { to: "Seed Heritage, Level 2", maps: [
+        { src: "maps/08-myer-to-seed.png", w: 1650, h: 760, step: "Level 2", cap: "Leave Myer on Level 2, by Adairs. You pass Lovisa on your left (you come back to it later). Walk along the hall past Witchery and Cotton On. Seed Heritage is on your right." }
+      ] },
       items: [
         { id: "c-shoes", who: "c", text: "Leather sneakers for the snow", note: "Bring Clara to try them on with thick socks." }
       ] },
-    { id: "seed", level: "2", name: "Seed Heritage", where: "Level 2 · near Mecca Maxima",
+    { id: "seed", level: "2", name: "Seed Heritage", where: "Level 2 · past Cotton On",
+      way: { to: "Mecca", maps: [
+        { src: "maps/09-seed-to-mecca.png", w: 515, h: 420, cap: "Mecca is right across the hall from Seed." }
+      ] },
       items: [
         { id: "c-tunic", who: "c", text: "Tunic", size: "6–8" },
         { id: "c-shorts", who: "c", text: "1 pair of shorts", size: "6–8" }
       ] },
-    { id: "mecca", level: "2", name: "Mecca", where: "Level 2 · near Cotton On",
+    { id: "mecca", level: "2", name: "Mecca", where: "Level 2 · across the hall from Seed",
+      way: { to: "Lovisa", maps: [
+        { src: "maps/10-mecca-to-lovisa.png", w: 1464, h: 401, cap: "Walk back along the hall toward Myer, past Swarovski and Pandora. Lovisa is on your right, next to Billini." }
+      ] },
       items: [
         { id: "g-maddie", who: "g", for: "Maddie", text: "Mecca gift voucher" }
       ] },
-    { id: "lovisa", level: "2", name: "Lovisa", where: "Level 2",
+    { id: "lovisa", level: "2", name: "Lovisa", where: "Level 2 · next to Billini, by Myer",
       tip: "Nothing you like? Big W and Kmart on Level 1 also sell earrings.",
       items: [
         { id: "g-amelia-ear", who: "g", for: "Amelia", text: "Earrings" }
       ] },
-    { id: "bigw", level: "1", name: "Big W & Kmart", where: "Level 1 · Big W near Dangerfield, Kmart near Centre Court",
+    { id: "bigw", level: "1", name: "Big W", where: "Level 1 · near Dangerfield",
+      tip: "Try to get all three here. Then you can skip Kmart.",
       items: [
         { id: "g-phil", who: "g", for: "Phil", text: "Star Wars: The Mandalorian graphic novel", note: "Nadine's Big W link. Get the book with all the seasons (Seasons 1–3)." },
-        { id: "g-amelia-daise", who: "g", for: "Amelia", text: "Daise exfoliating body scrub", note: "About $16. Kmart sells it too. Woolworths may have it." },
+        { id: "g-amelia-daise", who: "g", for: "Amelia", text: "Daise exfoliating body scrub", note: "About $16. If Big W doesn't have it, Kmart does." },
         { id: "g-mum", who: "g", for: "Mum", text: "Dirty Santa present" }
       ] },
-    { id: "backup", level: "1", who: "c", optional: true, name: "Backup for shoes", where: "Level 1 · Shoes & Sox or Williams",
+    { id: "kmart", level: "1", optional: true, name: "Kmart", where: "Level 1 · near Centre Court",
+      tip: "Only if Big W didn't have these. Kmart sells the Daise scrub.",
+      covers: ["g-amelia-daise", "g-mum"] },
+    { id: "backup", level: "1", optional: true, name: "Backup for shoes", where: "Level 1 · Shoes & Sox or Williams",
       tip: "Only if Myer had nothing. Shoes & Sox is near Hobbyco and has a big kids range. Williams is near Big W.",
-      items: [] },
+      covers: ["c-shoes"] },
     { marker: true, icon: "↑", title: "Head back up",
       text: "Take the escalator up one floor to Level 2 for Woolworths. Food goes last so it stays fresh." },
     { id: "woolies", level: "2", name: "Woolworths", where: "Level 2 · near Lush",
@@ -416,6 +435,14 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   }
 
   function itemsOf(stop) { return (stop.items || []).concat(state.custom[stop.id] || []); }
+  function findItem(id) {
+    for (var i = 0; i < STOPS.length; i++) {
+      var list = STOPS[i].items || [];
+      for (var j = 0; j < list.length; j++) if (list[j].id === id) return list[j];
+    }
+    return null;
+  }
+  function coveredOf(stop) { return (stop.covers || []).map(findItem).filter(Boolean); }
   function matches(it, f) { return f === "all" || it.who === f || (it.who === "b" && f !== "g"); }
   function allItems() {
     var out = [];
@@ -428,25 +455,31 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     return { done: done, total: list.length };
   }
   function stopDone(stop) {
-    if (stop.id === "backup") return !!state.checked["c-shoes"];
+    if (stop.covers) return stop.covers.every(function (id) { return state.checked[id]; });
     var items = itemsOf(stop);
     return items.length > 0 && items.every(function (it) { return state.checked[it.id]; });
   }
 
-  function nextStopOf(stop) {
+  // Next shop in the route. skipSorted: jump over "only if needed" shops that are no longer needed.
+  function nextStopOf(stop, skipSorted) {
     var i = STOPS.indexOf(stop);
-    for (var j = i + 1; j < STOPS.length; j++) if (!STOPS[j].marker && !STOPS[j].milestone) return STOPS[j];
+    for (var j = i + 1; j < STOPS.length; j++) {
+      var s = STOPS[j];
+      if (s.marker || s.milestone) continue;
+      if (skipSorted && s.optional && stopDone(s)) continue;
+      return s;
+    }
     return null;
   }
 
-  function renderWay(stop) {
+  function renderWay(stop, way) {
     var panel = h("div", { class: "way", id: "way-" + stop.id },
       h("div", { class: "way-head" },
-        h("span", { class: "way-label", text: "Next: " + stop.way.to }),
+        h("span", { class: "way-label", text: "Next: " + way.to }),
         h("button", { type: "button", class: "way-hide", id: "wayhide-" + stop.id, text: "Hide map",
           onclick: function () { wayOpen[stop.id] = false; render("head-" + stop.id); } })));
-    stop.way.maps.forEach(function (m) {
-      var title = "Map to " + stop.way.to + (m.step ? " (" + m.step + ")" : "");
+    way.maps.forEach(function (m) {
+      var title = "Map to " + way.to + (m.step ? " (" + m.step + ")" : "");
       panel.append(h("figure", { class: "way-step" },
         h("button", { type: "button", class: "way-img", "aria-label": "Open map full screen",
           onclick: function () { openViewer(m, title); } },
@@ -457,14 +490,17 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     return panel;
   }
 
-  function renderItem(it, stop) {
-    var id = "chk-" + it.id;
+  function renderItem(it, stop, prefix) {
+    var id = "chk-" + (prefix || "") + it.id;
     var input = h("input", { type: "checkbox", id: id, class: "chk" });
     input.checked = !!state.checked[it.id];
     input.addEventListener("change", function () {
       if (input.checked) state.checked[it.id] = true; else delete state.checked[it.id];
-      if (stopDone(stop)) { delete expanded[stop.id]; delete wayOpen[stop.id]; }
-      if (stop.id === "myer") delete expanded.backup;
+      STOPS.forEach(function (s) {
+        if (s.marker || s.milestone) return;
+        var ids = itemsOf(s).map(function (x) { return x.id; }).concat(s.covers || []);
+        if (ids.indexOf(it.id) !== -1 && stopDone(s)) { delete expanded[s.id]; delete wayOpen[s.id]; }
+      });
       save(); render(id);
     });
     var label = h("label", { for: id, class: "item-label" },
@@ -517,7 +553,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   }
 
   function renderStop(stop, f) {
-    var items = itemsOf(stop);
+    var items = stop.covers ? coveredOf(stop) : itemsOf(stop);
     var vis = items.filter(function (it) { return matches(it, f); });
     var done = stopDone(stop);
     var vdone = vis.filter(function (it) { return state.checked[it.id]; }).length;
@@ -526,7 +562,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     var open = expanded[stop.id] !== undefined ? expanded[stop.id] : !(done || empty);
 
     var countText;
-    if (stop.id === "backup") countText = done ? "Not needed" : "If needed";
+    if (stop.optional) countText = done ? "Sorted ✓" : "If needed";
     else if (done) countText = "Done ✓";
     else if (empty) countText = null;
     else countText = vdone + "/" + vis.length;
@@ -535,9 +571,12 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     var lvl = h("span", { class: "lvl" + (range ? " range" : ""), "aria-label": "Level " + stop.level },
       range ? null : h("span", { class: "l", text: "L" }), stop.level);
 
-    var next = nextStopOf(stop);
-    var wayAuto = done && !!next && !stopDone(next);
-    var showWay = !!stop.way && (wayOpen[stop.id] !== undefined ? wayOpen[stop.id] : wayAuto);
+    var next = nextStopOf(stop, true);
+    var imm = nextStopOf(stop, false);
+    // waySkip: directions to use when the very next shop is "only if needed" and no longer needed
+    var way = (stop.waySkip && imm && imm.optional && stopDone(imm)) ? stop.waySkip : stop.way;
+    var wayAuto = done && (!next || !stopDone(next));
+    var showWay = !!way && (wayOpen[stop.id] !== undefined ? wayOpen[stop.id] : wayAuto);
 
     var bodyId = "body-" + stop.id;
     var head = h("button", { type: "button", class: "card-head", "aria-expanded": String(open), "aria-controls": bodyId, id: "head-" + stop.id,
@@ -553,17 +592,17 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       if (stop.tip) body.append(h("p", { class: "tip", text: stop.tip }));
       if (vis.length) {
         var ul = h("ul", { class: "items" });
-        vis.forEach(function (it) { ul.append(renderItem(it, stop)); });
+        vis.forEach(function (it) { ul.append(renderItem(it, stop, stop.covers ? stop.id + "-" : "")); });
         body.append(ul);
       }
       if (stop.alt) body.append(h("p", { class: "alt", text: stop.alt }));
-      if (stop.way && !showWay) body.append(h("button", { type: "button", class: "show-way", id: "showway-" + stop.id,
-        text: "Show the way to " + stop.way.to, onclick: function () { wayOpen[stop.id] = true; render("wayhide-" + stop.id); } }));
+      if (way && !showWay) body.append(h("button", { type: "button", class: "show-way", id: "showway-" + stop.id,
+        text: "Show the way to " + way.to, onclick: function () { wayOpen[stop.id] = true; render("wayhide-" + stop.id); } }));
       if (!stop.optional) body.append(renderAdd(stop));
     }
 
     var cls = "stop" + (done ? " is-done" : "") + (stop.optional ? " is-optional" : "") + (empty ? " is-dim" : "");
-    return h("li", { class: cls }, h("div", { class: "rail" }, lvl), h("section", { class: "card", "aria-label": stop.name }, head, body, showWay ? renderWay(stop) : null));
+    return h("li", { class: cls }, h("div", { class: "rail" }, lvl), h("section", { class: "card", "aria-label": stop.name }, head, body, showWay ? renderWay(stop, way) : null));
   }
 
   function renderMilestone() {
@@ -679,7 +718,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 
   // Load every map now, so they still show if the signal drops inside the centre
   STOPS.forEach(function (s) {
-    if (s.way) s.way.maps.forEach(function (m) { var i = new Image(); i.src = m.src; });
+    [s.way, s.waySkip].forEach(function (w) { if (w) w.maps.forEach(function (m) { var i = new Image(); i.src = m.src; }); });
   });
 })();
 </script>
