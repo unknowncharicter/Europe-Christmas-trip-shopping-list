@@ -90,6 +90,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   position:sticky; top:env(safe-area-inset-top, 0px); z-index:5;
   background:var(--bg); padding-block:12px; display:grid; gap:10px;
   border-bottom:1px solid var(--line);
+  box-shadow:0 0 0 4px var(--bg);
 }
 .progress-text{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:15px}
 .progress-text strong{font-weight:800}
@@ -159,7 +160,11 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 .empty-msg{margin:0; padding:0 16px 14px; font-size:14px; color:var(--muted); font-style:italic}
 
 .items{list-style:none; margin:0; padding:0}
-.item{position:relative; border-top:1px solid var(--line); display:flex; align-items:stretch}
+.item{position:relative; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; align-items:stretch}
+.item-actions{flex-basis:100%; padding:0 16px 12px 54px; margin-top:-4px}
+.defer-btn{min-height:44px; padding:0 14px; border:1px solid var(--route); border-radius:10px; background:none; color:var(--route); font-weight:700; font-size:14.5px}
+.moved{margin:0 16px 12px; padding:2px 4px 2px 12px; border-radius:10px; background:var(--gift-soft); color:var(--gift); font-size:14px; display:flex; align-items:center; justify-content:space-between; gap:8px}
+.undo-btn{flex:none; min-height:44px; padding:0 10px; border:0; background:none; color:inherit; font-weight:800; text-decoration:underline}
 .chk{position:absolute; opacity:0; width:1px; height:1px; pointer-events:none}
 .item-label{flex:1; min-width:0; display:grid; grid-template-columns:26px minmax(0, 1fr); gap:12px; padding:13px 16px; cursor:pointer; align-items:start}
 .box{
@@ -251,7 +256,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 /* Tap feedback on touch screens */
 @media (hover:none){
   .card-head:active, .seg button:active, .next-btn:active, .show-way:active, .add-btn:active,
-  .way-hide:active, .wake:active, .reset:active, .viewer-bar button:active{opacity:.6}
+  .way-hide:active, .wake:active, .reset:active, .viewer-bar button:active, .defer-btn:active, .undo-btn:active{opacity:.6}
   .item-label:active{background:var(--bg)}
 }
 @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
@@ -265,7 +270,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   <header class="intro">
     <p class="eyebrow">Macquarie Centre · North Ryde</p>
     <h1>Europe trip and Christmas presents</h1>
-    <p class="lede">Clothes for Elliot and Clara, plus Christmas presents. Start on Level 4 and stop for lunch at Japan City after Kathmandu. Then work down to Level 1, and get the food at Woolworths on the way back to the car.</p>
+    <p class="lede">Clothes for Elliot and Clara, plus Christmas presents. Start on Level 4, grab lunch at Breadtop on Level 3 to eat as you shop, work down to Level 1, then get the food at Woolworths on the way back to the car.</p>
     <ol class="howto">
       <li><span>Tick things off as you buy them.</span></li>
       <li><span>When a shop is done, the map to the next shop opens.</span></li>
@@ -324,8 +329,8 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       text: "It's the rooftop car park near Talavera Rd. Go in through the Timezone doors onto Level 4. Kathmandu is right there." },
     { id: "l4", level: "4", name: "Kathmandu & Macpac", where: "Level 4 · next to Timezone",
       tip: "Kathmandu is next to Timezone. Macpac is a few doors along, next to Harry Hartog. Check both and compare price and fit.",
-      way: { to: "Lunch at Japan City", maps: [
-        { src: "maps/01-kathmandu-to-rebel.png", w: 895, h: 838, cap: "Walk along the hall away from Timezone, toward Fitness First. Japan City is on your right, next to Harry Hartog. (This map goes on to Rebel, your stop after lunch.)" }
+      way: { to: "Rebel", maps: [
+        { src: "maps/01-kathmandu-to-rebel.png", w: 895, h: 838, cap: "Walk along the hall away from Timezone, toward Fitness First. Rebel is at the end of the hall, on your left." }
       ] },
       items: [
         { id: "e-wpants", who: "e", text: "2 long waterproof pants", size: "S" },
@@ -333,19 +338,14 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         { id: "c-pants", who: "c", text: "Pants", size: "6–8", note: "Waterproof like Elliot's? If not, get them at Seed." },
         { id: "c-tops", who: "c", text: "2 long sleeve tops", size: "6–8", note: "Or get them at Seed." }
       ] },
-    { id: "lunch", level: "4", name: "Lunch: Japan City", where: "Level 4 · next to Harry Hartog",
-      tip: "A Japanese food hall with sushi, noodles, teppanyaki, tempura and desserts, so everyone can choose. Open 10am to 5pm.",
-      alt: "Not keen on Japanese? Level 3 has Nando's, Zeus Street Greek, Bondi Pizza and Mad Mex, near Event Cinemas.",
-      items: [
-        { id: "f-lunch", who: "f", text: "Lunch" }
-      ],
-      way: { to: "Rebel", text: "Keep walking to the end of the hall. Rebel is on your left, near Fitness First." } },
     { id: "rebel", level: "4", name: "Rebel", where: "Level 4 · end of the hall, near Fitness First",
       way: { to: "Harry Hartog", maps: [
-        { src: "maps/02-rebel-to-harry-hartog.png", w: 1332, h: 783, cap: "Head back along the hall toward Timezone. Harry Hartog is a short walk on your left, next to Japan City where you had lunch." }
+        { src: "maps/02-rebel-to-harry-hartog.png", w: 1332, h: 783, cap: "Head back along the hall toward Timezone. Harry Hartog is a short walk on your left, next to Macpac." }
       ] },
       items: [
-        { id: "g-dee", who: "g", for: "Dee", text: "Gym stuff" }
+        { id: "g-dee", who: "g", for: "Dee", text: "Gym stuff" },
+        { id: "g-mum-sneakers", who: "g", for: "Mum", text: "Black sneakers", deferTo: "jd", deferLabel: "Get at JD Sports",
+          notes: { rebel: "JD Sports has them too.", jd: "Not bought at Rebel, so get them here." } }
       ] },
     { id: "hh", level: "4", name: "Harry Hartog Bookseller", where: "Level 4 · next to Macpac",
       way: { to: "JD Sports, Level 3", maps: [
@@ -357,12 +357,22 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         { id: "g-brody-book", who: "g", for: "Brody", text: "A book" }
       ] },
     { id: "jd", level: "3", name: "JD Sports", where: "Level 3 · next to Hype DC",
-      way: { to: "Bonds", maps: [
-        { src: "maps/06-priceline-to-bonds.png", w: 1775, h: 841, cap: "Head back along the main hall the way you came, past Lids. Bonds is just past Glassons, on your left. (This map starts at Priceline, just down the hall from JD Sports.)" }
+      shares: ["g-mum-sneakers"],
+      way: { to: "Lunch at Breadtop", maps: [
+        { src: "maps/05-jd-sports-to-breadtop.png", w: 808, h: 947, cap: "Walk down the hall past The Athlete's Foot and Priceline. Breadtop is on your left, just past Priceline." }
       ] },
       items: [
         { id: "g-dad", who: "g", for: "Dad", text: "adidas Handball Spezial, grey", size: "US 9.5", note: "About $150. Show staff the product on JD's website." }
       ] },
+    { id: "lunch", level: "3", name: "Lunch: Breadtop", where: "Level 3 · just past Priceline, down from JD Sports",
+      tip: "Over 200 fresh buns and pastries, sweet and savoury. Grab a tray, pick your own and eat as you shop. Open 10am to 6pm.",
+      alt: "Hungry earlier? The Loft Cafe on Level 4, near Macpac, is open until 4pm. Bakers Delight on Level 3, near ALDI, has scrolls.",
+      items: [
+        { id: "f-lunch", who: "f", text: "Lunch" }
+      ],
+      way: { to: "Bonds", maps: [
+        { src: "maps/06-priceline-to-bonds.png", w: 1775, h: 841, cap: "Walk back up the hall past Priceline and Novo Shoes. At the top, turn left along the main hall and go past Lids. Bonds is just past Glassons, on your left." }
+      ] } },
     { id: "bonds", level: "3", name: "Bonds", where: "Level 3 · near Glassons, by the escalator",
       way: { to: "Myer", maps: [
         { src: "maps/07-bonds-to-myer.png", w: 1420, h: 710, cap: "Myer is just across the hall. Walk past Glassons, cross the hall and go into Myer between Foot Locker and Dotti." }
@@ -444,7 +454,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
 
   var WHO = { e: "Elliot", c: "Clara", b: "Both", g: "Presents", t: "Return", f: "Lunch" };
   var KEY = "europe-trip-shopping-v1";
-  var state = { checked: {}, custom: {}, filter: "all", last: null };
+  var state = { checked: {}, custom: {}, filter: "all", last: null, at: {}, deferred: {} };
   var expanded = {};   // per-visit open/closed overrides
   var addOpen = {};
   var wayOpen = {};   // per-visit show/hide overrides for directions
@@ -457,6 +467,8 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       state.custom = saved.custom || {};
       state.filter = saved.filter || "all";
       state.last = saved.last || null;
+      state.at = saved.at || {};
+      state.deferred = saved.deferred || {};
     }
   } catch (e) {}
 
@@ -501,7 +513,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     for (var i = 0; i < STOPS.length; i++) {
       var s = STOPS[i];
       if (s.marker || s.milestone || s.optional) continue;
-      var left = itemsOf(s).filter(function (it) { return matches(it, f) && !state.checked[it.id]; }).length;
+      var left = stopItems(s).filter(function (it) { return matches(it, f) && !state.checked[it.id]; }).length;
       if (left) return { stop: s, left: left };
     }
     return null;
@@ -527,9 +539,25 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     var done = list.filter(function (it) { return state.checked[it.id]; }).length;
     return { done: done, total: list.length };
   }
+  // Items as they show at this shop. Some items can be bought at either of two shops:
+  // once ticked at one, they disappear from the other. "Get at JD Sports" moves one on.
+  function stopItems(stop) {
+    if (stop.covers) return coveredOf(stop);
+    var own = itemsOf(stop).filter(function (it) {
+      if (state.at[it.id] && state.at[it.id] !== stop.id) return false;
+      if (it.deferTo && state.deferred[it.id] && !state.checked[it.id]) return false;
+      return true;
+    });
+    var shared = (stop.shares || []).map(findItem).filter(function (it) {
+      return it && (!state.checked[it.id] || state.at[it.id] === stop.id);
+    });
+    return own.concat(shared);
+  }
+  function isShared(stop, it) { return !!(stop.covers || (stop.shares && stop.shares.indexOf(it.id) !== -1)); }
+
   function stopDone(stop) {
     if (stop.covers) return stop.covers.every(function (id) { return state.checked[id]; });
-    var items = itemsOf(stop);
+    var items = stopItems(stop);
     return items.length > 0 && items.every(function (it) { return state.checked[it.id]; });
   }
 
@@ -569,11 +597,12 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
     var input = h("input", { type: "checkbox", id: id, class: "chk" });
     input.checked = !!state.checked[it.id];
     input.addEventListener("change", function () {
-      if (input.checked) state.checked[it.id] = true; else delete state.checked[it.id];
+      if (input.checked) { state.checked[it.id] = true; state.at[it.id] = stop.id; }
+      else { delete state.checked[it.id]; delete state.at[it.id]; }
       state.last = stop.id;   // the shop you are standing in
       STOPS.forEach(function (s) {
         if (s.marker || s.milestone) return;
-        var ids = itemsOf(s).map(function (x) { return x.id; }).concat(s.covers || []);
+        var ids = itemsOf(s).map(function (x) { return x.id; }).concat(s.covers || [], s.shares || []);
         if (ids.indexOf(it.id) !== -1 && stopDone(s)) { delete expanded[s.id]; delete wayOpen[s.id]; }
       });
       save(); render(id);
@@ -587,8 +616,17 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
         h("span", { class: "meta" },
           h("span", { class: "tag " + it.who, text: it.who === "g" ? (it.for ? "For " + it.for : "Present") : WHO[it.who] }),
           it.size ? h("span", { class: "size", text: "Size " + it.size }) : null),
-        it.note ? h("span", { class: "inote", text: it.note }) : null));
+        (it.notes && it.notes[stop.id]) || it.note ? h("span", { class: "inote", text: (it.notes && it.notes[stop.id]) || it.note }) : null));
     var li = h("li", { class: "item" }, input, label);
+    if (it.deferTo && it.deferTo !== stop.id && !state.checked[it.id]) {
+      li.append(h("div", { class: "item-actions" }, h("button", { type: "button", class: "defer-btn", id: "defer-" + it.id, text: it.deferLabel,
+        onclick: function () {
+          state.deferred[it.id] = true; state.last = stop.id;
+          if (stopDone(stop)) { delete expanded[stop.id]; delete wayOpen[stop.id]; }
+          save(); render();
+          if (stopDone(stop) && document.getElementById("way-" + stop.id)) scrollToEl(stopEl(stop.id));
+        } })));
+    }
     if (it.custom) {
       li.append(h("button", {
         type: "button", class: "del", "aria-label": "Remove " + it.text, text: "×",
@@ -630,7 +668,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
   }
 
   function renderStop(stop, f, nextId) {
-    var items = stop.covers ? coveredOf(stop) : itemsOf(stop);
+    var items = stopItems(stop);
     var vis = items.filter(function (it) { return matches(it, f); });
     var done = stopDone(stop);
     var vdone = vis.filter(function (it) { return state.checked[it.id]; }).length;
@@ -668,10 +706,17 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       if (stop.tip) body.append(h("p", { class: "tip", text: stop.tip }));
       if (vis.length) {
         var ul = h("ul", { class: "items" });
-        vis.forEach(function (it) { ul.append(renderItem(it, stop, stop.covers ? stop.id + "-" : "")); });
+        vis.forEach(function (it) { ul.append(renderItem(it, stop, isShared(stop, it) ? stop.id + "-" : "")); });
         body.append(ul);
       }
       if (stop.alt) body.append(h("p", { class: "alt", text: stop.alt }));
+      itemsOf(stop).forEach(function (it) {
+        if (!(it.deferTo && state.deferred[it.id] && !state.checked[it.id])) return;
+        body.append(h("p", { class: "moved" },
+          h("span", { text: it.text + (it.for ? " for " + it.for : "") + ": getting at JD Sports." }),
+          h("button", { type: "button", class: "undo-btn", text: "Undo",
+            onclick: function () { delete state.deferred[it.id]; save(); render(); } })));
+      });
       if (way && !showWay) body.append(h("button", { type: "button", class: "show-way", id: "showway-" + stop.id,
         text: "Show the way to " + way.to, onclick: function () { wayOpen[stop.id] = true; render("wayhide-" + stop.id); } }));
       if (!stop.optional) body.append(renderAdd(stop));
@@ -764,7 +809,7 @@ h1{margin:0; font-size:32px; line-height:1.05; font-weight:800; letter-spacing:-
       area.append(h("div", { class: "confirm" },
         h("span", { text: "Untick everything?" }),
         h("button", { type: "button", class: "yes", id: "resetYes", text: "Yes, clear",
-          onclick: function () { state.checked = {}; state.last = null; expanded = {}; wayOpen = {}; confirmReset = false; save(); render(); renderReset(); } }),
+          onclick: function () { state.checked = {}; state.last = null; state.at = {}; state.deferred = {}; expanded = {}; wayOpen = {}; confirmReset = false; save(); render(); renderReset(); } }),
         h("button", { type: "button", class: "reset", text: "Cancel",
           onclick: function () { confirmReset = false; renderReset(); } })));
     }
